@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Target Persona — Discovery + Research</title>
+<style>
+:root{
+  --bg:#ffffff;
+  --surface:#f7f7f8;
+  --surface-2:#fdfdfd;
+  --ink:#1a1a1a;
+  --ink-soft:#5a5a5f;
+  --ink-faint:#7a7a80;
+  --line:#e2e2e6;
+  --line-soft:#eeeef1;
+  --accent:#cc0000;
+  --accent-soft:#fdeaea;
+  --accent-ink:#a30000;
+  --tier1:#0f7b3f;
+  --tier1-bg:#e8f5ee;
+  --tier2:#9a5b00;
+  --tier2-bg:#fdf1e0;
+  --tier3:#8a2b2b;
+  --tier3-bg:#fbeaea;
+  --ask:#0b5cab;
+  --ask-bg:#e8f1fb;
+  --val:#6b3fa0;
+  --val-bg:#f1ebfa;
+  --radius:10px;
+  --maxw:1080px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#16161a;
+    --surface:#1e1e24;
+    --surface-2:#222229;
+    --ink:#ececf0;
+    --ink-soft:#b4b4bd;
+    --ink-faint:#8e8e98;
+    --line:#33333d;
+    --line-soft:#2a2a33;
+    --accent:#ff6b6b;
+    --accent-soft:#33201f;
+    --accent-ink:#ff8f8f;
+    --tier1:#5fd39a;
+    --tier1-bg:#163024;
+    --tier2:#e5b169;
+    --tier2-bg:#33260f;
+    --tier3:#f08a8a;
+    --tier3-bg:#331d1d;
+    --ask:#6fb3f5;
+    --ask-bg:#152738;
+    --val:#c3a2ef;
+    --val-bg:#251c33;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:var(--maxw);margin-inline:auto;padding:32px 24px 72px}
+
+header.masthead{
+  border-block-end:3px solid var(--accent);
+  padding-block-end:18px;
+  margin-block-end:4px;
+}
+.eyebrow{
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent-ink);font-weight:700;margin:0 0 8px;
+}
+h1{font-size:29px;line-height:1.22;margin:0 0 10px;letter-spacing:-.015em}
+.sub{color:var(--ink-soft);font-size:14.5px;margin:0}
+.sources{color:var(--ink-faint);font-size:12.5px;margin:10px 0 0}
+
+/* ---------- tabs (CSS-only) ---------- */
+.tabs input[type=radio]{position:absolute;opacity:0;pointer-events:none}
+.tablist{
+  display:flex;flex-wrap:wrap;gap:4px;
+  border-block-end:1px solid var(--line);
+  margin-block:22px 0;
+}
+.tablist label{
+  display:inline-block;padding:11px 16px;cursor:pointer;
+  font-size:14px;font-weight:600;color:var(--ink-soft);
+  border:1px solid transparent;border-block-end:none;
+  border-start-start-radius:8px;border-start-end-radius:8px;
+  margin-block-end:-1px;transition:color .12s,background .12s;
+  user-select:none;
+}
+.tablist label:hover{color:var(--ink);background:var(--surface)}
+.panel{display:none;padding-block-start:28px;animation:fade .18s ease-out}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+#t1:checked ~ .tablist label[for=t1],
+#t2:checked ~ .tablist label[for=t2],
+#t3:checked ~ .tablist label[for=t3],
+#t4:checked ~ .tablist label[for=t4],
+#t5:checked ~ .tablist label[for=t5],
+#t6:checked ~ .tablist label[for=t6]{
+  color:var(--accent-ink);background:var(--bg);
+  border-color:var(--line);border-block-end:1px solid var(--bg);
+}
+#t1:checked ~ .panels #p1,
+#t2:checked ~ .panels #p2,
+#t3:checked ~ .panels #p3,
+#t4:checked ~ .panels #p4,
+#t5:checked ~ .panels #p5,
+#t6:checked ~ .panels #p6{display:block}
+#t1:focus-visible ~ .tablist label[for=t1],
+#t2:focus-visible ~ .tablist label[for=t2],
+#t3:focus-visible ~ .tablist label[for=t3],
+#t4:focus-visible ~ .tablist label[for=t4],
+#t5:focus-visible ~ .tablist label[for=t5],
+#t6:focus-visible ~ .tablist label[for=t6]{outline:2px solid var(--ask);outline-offset:2px}
+
+/* ---------- typography ---------- */
+h2{font-size:20px;margin:34px 0 12px;letter-spacing:-.01em;line-height:1.3}
+h2:first-child{margin-block-start:0}
+h3{font-size:15.5px;margin:24px 0 8px;color:var(--ink)}
+h4{font-size:14px;margin:18px 0 6px;color:var(--ink-soft);
+   text-transform:uppercase;letter-spacing:.07em}
+p{margin:0 0 13px}
+ul{margin:0 0 14px;padding-inline-start:22px}
+li{margin-block-end:6px}
+strong{font-weight:650}
+em{color:var(--ink-soft)}
+
+.lede{font-size:16.5px;color:var(--ink-soft);margin-block-end:20px}
+
+blockquote.through{
+  margin:0 0 20px;padding:18px 22px;
+  background:var(--accent-soft);
+  border-inline-start:4px solid var(--accent);
+  border-radius:var(--radius);
+  font-size:17px;font-weight:600;line-height:1.5;
+}
+blockquote.through p{margin:0}
+
+.callout{
+  margin:0 0 18px;padding:14px 18px;
+  background:var(--surface);border:1px solid var(--line);
+  border-inline-start:3px solid var(--accent);
+  border-radius:var(--radius);font-size:14.5px;
+}
+.callout p{margin:0}
+.callout .lbl{
+  display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--accent-ink);font-weight:700;margin-block-end:5px;
+}
+
+/* ---------- tables ---------- */
+table{border-collapse:collapse;width:100%;margin:0 0 20px;font-size:14px}
+caption{text-align:start;font-size:13px;color:var(--ink-faint);padding-block-end:8px}
+th,td{padding:10px 12px;text-align:start;vertical-align:top;border-block-end:1px solid var(--line-soft)}
+thead th{
+  background:var(--accent);color:#fff;font-size:12.5px;font-weight:650;
+  letter-spacing:.02em;border-block-end:none;
+}
+thead th:first-child{border-start-start-radius:8px}
+thead th:last-child{border-start-end-radius:8px}
+tbody tr:nth-child(even){background:var(--surface-2)}
+td:first-child{font-weight:600}
+
+/* ---------- theme cards ---------- */
+.theme{
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px;margin-block-end:12px;background:var(--surface-2);
+}
+.theme h3{margin:0 0 7px;font-size:15.5px}
+.theme p:last-child{margin-block-end:0}
+.theme ul{margin-block-end:0}
+.tnum{
+  display:inline-block;min-width:22px;height:22px;line-height:22px;
+  text-align:center;background:var(--accent);color:#fff;
+  border-radius:50%;font-size:11.5px;font-weight:700;
+  margin-inline-end:9px;vertical-align:1px;
+}
+
+/* ---------- use case cards ---------- */
+.tier{margin-block-end:30px}
+.tierhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-block-end:6px}
+.tierhead h3{margin:0;font-size:17px}
+.pill{
+  display:inline-block;padding:3px 10px;border-radius:999px;
+  font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+}
+.p1{background:var(--tier1-bg);color:var(--tier1)}
+.p2{background:var(--tier2-bg);color:var(--tier2)}
+.p3{background:var(--tier3-bg);color:var(--tier3)}
+.tiernote{color:var(--ink-faint);font-size:13px;margin:0 0 14px}
+.uc{
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:15px 18px;margin-block-end:10px;background:var(--surface-2);
+}
+.uc-t{font-weight:650;font-size:15px;margin:0 0 4px}
+.uc-d{margin:0 0 10px;color:var(--ink-soft);font-size:14.5px}
+.uc dl{margin:0;font-size:13.5px}
+.uc dt{
+  font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:700;margin-block-start:8px;
+}
+.uc dd{margin:2px 0 0}
+.flag{
+  display:inline-block;margin-block-start:10px;padding:4px 10px;
+  background:var(--accent-soft);color:var(--accent-ink);
+  border-radius:6px;font-size:12px;font-weight:650;
+}
+
+/* ---------- questions ---------- */
+.qgroup{margin-block-end:22px}
+.qgroup h3{
+  margin:0 0 9px;padding-block-end:6px;font-size:14.5px;
+  border-block-end:1px solid var(--line);
+}
+.q{display:flex;gap:10px;margin-block-end:8px;font-size:14.5px;align-items:flex-start}
+.tag{
+  flex:0 0 auto;padding:2px 8px;border-radius:5px;
+  font-size:10.5px;font-weight:750;letter-spacing:.06em;
+  margin-block-start:3px;
+}
+.tag-a{background:var(--ask-bg);color:var(--ask)}
+.tag-v{background:var(--val-bg);color:var(--val)}
+.q p{margin:0}
+
+.legend{
+  display:flex;gap:22px;flex-wrap:wrap;margin-block-end:22px;
+  padding:12px 16px;background:var(--surface);border-radius:var(--radius);
+  font-size:13.5px;
+}
+.legend div{display:flex;gap:8px;align-items:center}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-block-end:20px}
+.card{
+  border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px;background:var(--surface-2);
+}
+.card h3{margin:0 0 10px;font-size:15.5px;color:var(--accent-ink)}
+.card ul{margin-block-end:0}
+.card p:last-child{margin-block-end:0}
+
+.tick li{margin-block-end:7px}
+
+footer{
+  margin-block-start:44px;padding-block-start:18px;
+  border-block-start:1px solid var(--line);
+  color:var(--ink-faint);font-size:12.5px;
+}
+
+@media (max-width:720px){
+  .grid2{grid-template-columns:1fr}
+  h1{font-size:24px}
+  .wrap{padding:22px 16px 56px}
+  .tablist label{padding:9px 11px;font-size:13px}
+}
+
+@media print{
+  .tablist{display:none}
+  .panel{display:block !important;page-break-before:always;padding-block-start:0}
+  .panel:first-of-type{page-break-before:avoid}
+  body{font-size:11pt}
+  .wrap{max-width:none;padding:0}
+  thead th{background:#cc0000 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .uc,.theme,.card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Target &middot; Frontline Leader Research</p>
+  <h1>Target Persona &mdash; Discovery + Research</h1>
+  <p class="sub">Discovery synthesis, use cases to land, and the open questions that gate them.</p>
+  <p class="sources">Sources: Target Store Director future-state persona materials; Store Director call notes; Supply Chain + Site Director discovery call (Jennifer Rider, Jennifer Hunter, Nicholas Coulter, Nathan Campbell, Benjamin Kremer). Compiled by Karin Smith.</p>
+</header>
+
+<div class="tabs">
+  <input type="radio" name="tabs" id="t1" checked>
+  <input type="radio" name="tabs" id="t2">
+  <input type="radio" name="tabs" id="t3">
+  <input type="radio" name="tabs" id="t4">
+  <input type="radio" name="tabs" id="t5">
+  <input type="radio" name="tabs" id="t6">
+
+  <nav class="tablist">
+    <label for="t1">Overview</label>
+    <label for="t2">Store Director</label>
+    <label for="t3">Supply Chain / Site</label>
+    <label for="t4">Use Cases</label>
+    <label for="t5">Open Questions</label>
+    <label for="t6">On the Visit</label>
+  </nav>
+
+  <div class="panels">
+
+  <!-- ============ OVERVIEW ============ -->
+  <section class="panel" id="p1">
+    <h2>Two audiences, one pattern</h2>
+    <p class="lede">Both groups are senior leaders whose leadership work is being displaced by assembly work. What differs is what they are assembling.</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Store Director</h3>
+        <blockquote class="through" style="font-size:15px;padding:14px 16px;margin-block-end:12px"><p>Give Store Directors their leadership job back &mdash; time out of task mode, spent coaching their teams and observing their stores.</p></blockquote>
+        <p>The bottleneck is <strong>comms and orchestration</strong>. They drown in messages, reading, and coordinating other people&rsquo;s initiatives.</p>
+        <p><strong>Signature proof point:</strong> ~12 projects, ~50 dates, different owners across multiple pyramids, separate contacts for each.</p>
+        <p><strong>What gets displaced:</strong> store observations &mdash; the feedback loop that finds improvements.</p>
+      </div>
+      <div class="card">
+        <h3>Supply Chain + Site Director</h3>
+        <blockquote class="through" style="font-size:15px;padding:14px 16px;margin-block-end:12px"><p>Site Directors spend their mornings assembling the health of the building by hand. Give them that picture on arrival, and give the time back to talent and culture.</p></blockquote>
+        <p>The bottleneck is <strong>data</strong>. They drown in reports, dashboards, and reconciliation.</p>
+        <p><strong>Signature proof point:</strong> 90+ minutes every morning pulling data, reviewing it, and prioritizing.</p>
+        <p><strong>What gets displaced:</strong> talent and culture &mdash; upskilling and development.</p>
+      </div>
+    </div>
+
+    <h2>Side by side</h2>
+    <table>
+      <thead><tr><th>&nbsp;</th><th>Store Director</th><th>Supply Chain + Site Director</th></tr></thead>
+      <tbody>
+        <tr><td>Core burden</td><td>Translation and orchestration</td><td>Data assembly and reconciliation</td></tr>
+        <tr><td>Where it happens</td><td>Email, MyDayComms, Excel</td><td>Reports, dashboards, Excel</td></tr>
+        <tr><td>Named systems</td><td>MyDayComms, UKG, Excel</td><td>Origami, Greenfield/PBI, Workday, Apollo, UKG, Excel</td></tr>
+        <tr><td>Signature proof point</td><td>~12 projects, ~50 dates, multiple owners</td><td>90+ minutes of morning planning</td></tr>
+        <tr><td>Displaced work</td><td>Store observations</td><td>Talent, culture, upskilling</td></tr>
+        <tr><td>Adoption evidence</td><td>Already active Copilot users with self-selected use cases</td><td>Asking about scheduled prompts, notebooks, analytics</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <span class="lbl">Shared ground</span>
+      <p>UKG scheduling pain, heavy Excel use, mornings that start in email, and leadership time crowded out by task mode. Both audiences describe the same displacement with different mechanics &mdash; which means one narrative can carry both, provided the proof points stay specific to each.</p>
+    </div>
+
+    <h2>How to make it land</h2>
+    <p>Do not lead with capabilities. <strong>Capture one or two vivid moments</strong> &mdash; an SD connecting dots or leading down a level, a Site Director cross-checking two systems that disagree &mdash; and in the follow-up, play that exact moment back, solved.</p>
+    <p>Nothing sells meaningful change like their own building&rsquo;s example. The 90-minute figure and the 12-projects/50-dates figure are the two strongest numbers available; both are theirs, and both convert directly into leadership time.</p>
+  </section>
+
+  <!-- ============ STORE DIRECTOR ============ -->
+  <section class="panel" id="p2">
+    <blockquote class="through"><p>Give Store Directors their leadership job back &mdash; time out of task mode, spent coaching their teams and observing their stores.</p></blockquote>
+    <p class="lede">Time saved is the mechanism. Coaching capacity is the outcome. Always land on the outcome.</p>
+
+    <h2>What they own</h2>
+    <ul class="tick">
+      <li>Accountability for total store results, with recognition and reward aligned to store performance</li>
+      <li>Bringing the Target guest experience to life</li>
+      <li>Store culture and recognition</li>
+      <li>Developing and sustaining a strong leadership pipeline</li>
+      <li>Setting clear expectations and priorities</li>
+      <li>Store brand image and how the team shows up as brand ambassadors</li>
+      <li>Community engagement and connection</li>
+    </ul>
+
+    <h2>The four pillars</h2>
+    <table>
+      <thead><tr><th>Pillar</th><th>Definition</th></tr></thead>
+      <tbody>
+        <tr><td>Guest</td><td>The most delightful guest experience in retail &mdash; easy, inspiring, friendly</td></tr>
+        <tr><td>Team</td><td>High-performing, engaged team, led by purpose, generously serving communities</td></tr>
+        <tr><td>Operations</td><td>Consistent operations that power the guest experience</td></tr>
+        <tr><td>Financials</td><td>Strong, sustainable P&amp;L fueled by clear financial ownership, data-driven decisions, and operational excellence</td></tr>
+      </tbody>
+    </table>
+
+    <h2>What we heard</h2>
+
+    <div class="theme">
+      <h3><span class="tnum">1</span>The job has become a translation job</h3>
+      <p><strong>This is the headline insight.</strong> Corporate produces content and initiatives in one shape &mdash; workstream-specific, pyramid-specific, calendar-specific. The SD manually converts it into another: store-specific, day-specific, person-specific.</p>
+      <ul>
+        <li><strong>Reading arrives in the wrong shape.</strong> Workstream-specific, not store-specific, so SDs deconstruct and customize it.</li>
+        <li><strong>The work is duplicated across the fleet.</strong> Every SD independently performs the same translation.</li>
+        <li><strong>It happens off the clock.</strong> Increasingly it starts at home, before the shift. <em>The pre-work is the workaround.</em></li>
+      </ul>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">2</span>Orchestration without coordination</h3>
+      <p>Multiple pyramids push initiatives to stores independently. The SD becomes the integration layer &mdash; reconciling dates, trainings and reading, and chasing confirmation from in-store ICs. Twelve projects and fifty dates is the shape of it, with a different owner and contact behind each.</p>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">3</span>Comms require triage <em>and</em> confirmation</h3>
+      <p>MyDayComms is not just reading. It is triage plus confirming completion &mdash; a closed-loop obligation stacked on the information load, compounding across every channel.</p>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">4</span>Analysis pulls them off the floor</h3>
+      <p>Heavy Excel users. The data exists, but reaching it costs floor presence. Every hour in a spreadsheet is an hour not leading.</p>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">5</span>Scheduling</h3>
+      <p>Effective scheduling is a significant pain point. UKG implementation is in progress.</p>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">6</span>Store observations are what suffer</h3>
+      <p>Seeing where improvements can be made is the first thing cut. This is the sharpest casualty: not just lost time, but the feedback loop that finds improvements going dark. Problems stay invisible until they surface in the metrics.</p>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">7</span>Where they want to spend time</h3>
+      <p><strong>Coaching and leadership development</strong> is where SDs feel most like leaders. They want out of task mode &mdash; and want to help their teams get out of task mode too.</p>
+      <p><em>Compounding effect:</em> an SD trapped in execution cannot coach their leaders out of execution either. The persona&rsquo;s &ldquo;leading down a level&rdquo; problem replicates one layer further down. Fixing it at the SD level unlocks the whole leadership pipeline.</p>
+    </div>
+
+    <h2>Persona pain points, for reference</h2>
+    <p>The five stated pain points from the Target materials, which the call notes confirm and sharpen.</p>
+    <ul>
+      <li><strong>Workload &amp; workforce volatility</strong> &mdash; coverage gaps pull SDs into constant rebalancing instead of building a stable, developed team.</li>
+      <li><strong>Unclear prioritization</strong> &mdash; everything feels high-priority, with no tradeoff guidance when labor is constrained.</li>
+      <li><strong>Lack of empowerment to lead</strong> &mdash; SDs default to execution and &ldquo;lead down a level.&rdquo;</li>
+      <li><strong>Disconnected tools &amp; communication channels</strong> &mdash; no single view of what matters.</li>
+      <li><strong>Constantly shifting focus</strong> &mdash; shifting field-leader priorities create frequent firefighting.</li>
+    </ul>
+
+    <h2>Copilot adoption &mdash; the strongest evidence</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>Already using it for</h3>
+        <ul>
+          <li>Documenting best practices</li>
+          <li>Leadership development</li>
+          <li>Auto-adding dates and action items to the calendar</li>
+          <li>Analyzing guest feedback</li>
+          <li>Building a team map with responsibilities</li>
+        </ul>
+        <p style="margin-block-start:12px"><strong>Why it matters:</strong> not a cold audience. They self-selected the highest-value use cases unprompted, and nearly every one maps to the persona&rsquo;s ownership list. <em>Given a tool that removes friction, SDs spend the time on leadership.</em></p>
+      </div>
+      <div class="card">
+        <h3>What they want next</h3>
+        <ul>
+          <li>More detailed review of emails</li>
+          <li>Better at adding multiple dates to the calendar</li>
+          <li>Using it for comms and tracking</li>
+          <li>Prompting help to get the right answers</li>
+          <li>Report creation &mdash; one SD built their own dashboard because the existing one was not useful</li>
+        </ul>
+        <p style="margin-block-start:12px"><strong>Why it matters:</strong> the ask list is almost a one-to-one match with the pain points. When a user routes around official tooling to build their own dashboard, that is not a feature request &mdash; it is evidence the current system does not serve them.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="lbl">Correlation to test</span>
+      <p>Stores with low guest metrics also appear to carry operational issues. If observation is what suffers most, that may be the connective tissue &mdash; less observation means fewer improvements caught, showing up in both operations and guest scores. <strong>Worth testing, not asserting.</strong> If it holds, it turns &ldquo;give SDs time back&rdquo; into a measurable performance argument in Target&rsquo;s own language.</p>
+    </div>
+  
+    <h2>Use cases to land</h2>
+    <p class="lede">Tiered by how much has to be true before they work. The same set appears on the Use Cases tab alongside the Supply Chain / Site Director list.</p>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 1</h3><span class="pill p1">Land first</span></div>
+      <p class="tiernote">Already proven in their hands, or runs on M365 they already have.</p>
+
+      <div class="uc">
+        <p class="uc-t">1. Deeper email review and action extraction</p>
+        <p class="uc-d">Pull the actions, owners and dates out of the morning email load, and turn metrics and leader recaps into a store-specific read.</p>
+        <dl>
+          <dt>Evidence</dt><dd>They asked for &ldquo;more detailed review of emails&rdquo; by name; the day already starts in the inbox, from home.</dd>
+          <dt>Unblocks</dt><dd>The at-home morning, and the front half of the translation problem.</dd>
+          <dt>Must be true</dt><dd>Nothing beyond mail &mdash; this is why it goes first.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">2. Reliable multi-date calendar capture</p>
+        <p class="uc-d">Take a piece of corporate reading with many dates and land all of them, with the action items attached.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Already using Copilot for auto-adding dates and action items &mdash; <em>and</em> named &ldquo;better at adding multiple dates&rdquo; as the top gap. A working use case with a known ceiling.</dd>
+          <dt>Unblocks</dt><dd>The fifty-dates problem, at the individual level.</dd>
+          <dt>Must be true</dt><dd>Nothing beyond calendar. The fastest credibility win available.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">3. Best practice documentation and leadership development content</p>
+        <dl>
+          <dt>Evidence</dt><dd>Both already in active use, unprompted.</dd>
+          <dt>Unblocks</dt><dd>Directly funds the coaching time they say they want.</dd>
+          <dt>Must be true</dt><dd>Already true. Use these as the reference story for peers.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">4. Team map with responsibilities</p>
+        <dl>
+          <dt>Evidence</dt><dd>Already in use.</dd>
+          <dt>Unblocks</dt><dd>Clear expectations and pipeline visibility, both on the ownership list.</dd>
+          <dt>Must be true</dt><dd>Already true.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 2</h3><span class="pill p2">Build toward</span></div>
+      <p class="tiernote">Needs content or data connection.</p>
+
+      <div class="uc">
+        <p class="uc-t">5. Store-specific morning brief</p>
+        <p class="uc-d">Walk in already oriented: metrics, recaps and what matters today, localized to this store and already triaged.</p>
+        <dl>
+          <dt>Evidence</dt><dd>The at-home email routine exists precisely because this does not.</dd>
+          <dt>Unblocks</dt><dd>The pre-work workaround.</dd>
+          <dt>Must be true</dt><dd>Access to the metrics and recap sources, and a definition of what &ldquo;healthy store today&rdquo; looks like.</dd>
+        </dl>
+        <span class="flag">Flagship</span>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">6. Translation done once</p>
+        <p class="uc-d">Corporate reading localized to this store automatically, instead of every SD deconstructing it alone.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Reading is workstream-specific, not store-specific; the same conversion is repeated across the fleet.</dd>
+          <dt>Unblocks</dt><dd>The duplicated-work problem &mdash; the highest-leverage fix in the set, because it scales across every store at once.</dd>
+          <dt>Must be true</dt><dd>Access to the corporate content pipeline, and store-level context to localize against.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">7. Self-serve reporting and views</p>
+        <p class="uc-d">Report creation on their terms, including the dashboard one SD built because the standard one was not useful.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Named as a want; one SD already routed around the official tooling.</dd>
+          <dt>Unblocks</dt><dd>Excel time, and floor presence.</dd>
+          <dt>Must be true</dt><dd>Access to underlying store data, not just the existing dashboard layer.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">8. Guest feedback analysis</p>
+        <p class="uc-d">Already in use individually; the opportunity is doing it consistently and at scale.</p>
+        <dl>
+          <dt>Evidence</dt><dd>On the current-use list.</dd>
+          <dt>Unblocks</dt><dd>The guest pillar, and potentially the operations/guest correlation.</dd>
+          <dt>Must be true</dt><dd>Which feedback sources are reachable.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 3</h3><span class="pill p3">Gated on system access</span></div>
+
+      <div class="uc">
+        <p class="uc-t">9. Initiative orchestration view</p>
+        <p class="uc-d">All initiatives, dates, owners and confirmations in a single deconflicted place.</p>
+        <dl>
+          <dt>Evidence</dt><dd>12 projects, ~50 dates, multiple pyramids, separate contacts.</dd>
+          <dt>Unblocks</dt><dd>The orchestration burden &mdash; and, if it works upstream, prevents it rather than absorbing it.</dd>
+          <dt>Must be true</dt><dd>Whether initiative data exists anywhere centrally, or only in the SD&rsquo;s head. <strong>Answer before promising it.</strong></dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">10. Closed-loop comms</p>
+        <p class="uc-d">MyDayComms triage and completion confirmation handled in the flow of work.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Triage plus confirmation is a named, compounding obligation.</dd>
+          <dt>Must be true</dt><dd>MyDayComms integration.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">11. Coverage prediction</p>
+        <p class="uc-d">Gaps anticipated and rebalancing pre-suggested before the shift breaks down.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Scheduling named as a major pain point; UKG in progress.</dd>
+          <dt>Must be true</dt><dd>UKG connection &mdash; the same open question as the Site Director side.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">12. Frontline answers on the handheld</p>
+        <p class="uc-d">Any team member gets instant answers &mdash; returns, policy, process steps &mdash; without pulling a leader off task.</p>
+        <dl>
+          <dt>Evidence</dt><dd>The &ldquo;leading down a level&rdquo; pattern in the persona.</dd>
+          <dt>Must be true</dt><dd>Access to policy and process content, plus a handheld surface.</dd>
+        </dl>
+      </div>
+    </div>
+
+
+  </section>
+
+  <!-- ============ SUPPLY CHAIN ============ -->
+  <section class="panel" id="p3">
+    <blockquote class="through"><p>Site Directors spend their mornings assembling the health of the building by hand. Give them that picture on arrival, and give the time back to talent and culture.</p></blockquote>
+    <p class="lede">The mechanism is data assembly &mdash; pulling, cross-checking, reconciling. The outcome is upskilling and talent development, which is where they say they want to spend their time.</p>
+
+    <h2>What they are accountable for</h2>
+    <ul class="tick">
+      <li><strong>Safety &mdash; the highest priority</strong>, stated explicitly and unambiguously</li>
+      <li>Financials</li>
+      <li>Throughput</li>
+      <li>Productivity and performance</li>
+      <li>Talent, culture, and development</li>
+    </ul>
+
+    <div class="callout">
+      <span class="lbl">How the day starts</span>
+      <p>Recaps arrive by email. They review reports to establish the current &ldquo;health of the building.&rdquo; Calendars are updated in the morning as they determine what to prioritize and who to connect with. The plan of day is constructed, not delivered &mdash; <strong>90 minutes or more, every morning.</strong></p>
+    </div>
+
+    <h2>The systems they work across</h2>
+    <table>
+      <thead><tr><th>System</th><th>Purpose</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Origami</td><td>Safety</td><td>Data entry burden mentioned specifically</td></tr>
+        <tr><td>Greenfield</td><td>Dashboard</td><td>To be replaced by Power BI</td></tr>
+        <tr><td>Workday</td><td>Talent and development</td><td>&nbsp;</td></tr>
+        <tr><td>Apollo</td><td>&mdash;</td><td>Named as a source to reconcile</td></tr>
+        <tr><td>UKG</td><td>Labor availability / scheduling</td><td>New tool &mdash; connection opportunity flagged</td></tr>
+        <tr><td>Excel</td><td>Analysis and reporting</td><td>Heavy use, especially in food</td></tr>
+        <tr><td>PowerPoint</td><td>Presenting views to audiences</td><td>&nbsp;</td></tr>
+      </tbody>
+    </table>
+
+    <h2>What we heard</h2>
+
+    <div class="theme">
+      <h3><span class="tnum">1</span>Email triage: inform versus action</h3>
+      <p>Sorting informational email from email that requires action is a challenge, and it is the gate on building the plan of day. Prioritizing action out of the inbox came up as a distinct theme, separate from the volume problem.</p>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">2</span>&ldquo;Health of the building&rdquo; is assembled by hand</h3>
+      <p>The morning report review exists to answer one question: what is the state of this site right now? Today that answer has to be built rather than read, and three things make it expensive:</p>
+      <ul>
+        <li><strong>Multiple sources.</strong> Origami, Greenfield, Workday and Apollo each hold part of the picture.</li>
+        <li><strong>Conflicting data quality.</strong> Sources disagree, so cross-checking must happen before the data can be trusted.</li>
+        <li><strong>Reconciliation on top of retrieval.</strong> The cross-check is work layered on the pull &mdash; together, the clearest driver of the 90-minute morning.</li>
+      </ul>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">3</span>Visibility gaps: single-site, single-moment</h3>
+      <p>Dashboards provide a single-site view with <strong>little visibility into multi-site or enterprise views.</strong> Trending over time is also difficult to see &mdash; <em>&ldquo;good catches&rdquo;</em> was the example given. The picture they can assemble is not only manual, it is narrow: one building, right now.</p>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">4</span>Data is hard to reach, hard to shape, hard to go deep in</h3>
+      <p>Sources can be large or not specific enough, and data is <strong>layered and hard to find</strong> &mdash; which makes checking in and catching blindspots harder than it should be. Views are difficult to customize, and they want <strong>more advanced analytics</strong> to dig deeper rather than stopping where the dashboard stops.</p>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">5</span>Data entry could be streamlined</h3>
+      <p>Not all types are known, but <strong>safety data entry specifically</strong> was called out as a candidate for streamlining.</p>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">6</span>Report once, present many</h3>
+      <p>They take action on data and then present it back in different views to different audiences &mdash; PowerPoint and Excel. Reporting splits into views for <strong>&ldquo;outside the building&rdquo;</strong> and <strong>&ldquo;inside the building.&rdquo;</strong> Each audience view is rebuilt by hand today.</p>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">7</span>Weekly staffing optimization</h3>
+      <p>A named challenge with a defined process. To build the weekly plan they look at:</p>
+      <ul>
+        <li>Site demand</li>
+        <li>Labor availability (UKG &mdash; new tool)</li>
+        <li>Who is volunteering</li>
+        <li>Overtime impact</li>
+        <li>Special projects and training that may consume resources</li>
+        <li>A lookback on performance, attendance and volunteers</li>
+      </ul>
+    </div>
+
+    <div class="theme">
+      <h3><span class="tnum">8</span>Where they want to spend time</h3>
+      <p><strong>Talent and culture</strong> &mdash; upskilling, content, and talent development. The same pattern as Store Directors: the leadership work is what gets displaced by the assembly work.</p>
+    </div>
+
+    <h2>What they asked about</h2>
+    <p>Raised directly by participants, unprompted.</p>
+    <ul>
+      <li><strong>Scheduled prompts</strong> &mdash; a Sunday run to make the start of the week easier</li>
+      <li><strong>Notebooks</strong> &mdash; explicit interest in understanding how they could help</li>
+      <li><strong>Prompts for consistent reporting and views</strong> &mdash; asked as an open question</li>
+      <li><strong>Connecting UKG</strong> &mdash; flagged as a new tool, with connection raised as a possibility</li>
+      <li><strong>More advanced analytics</strong> &mdash; the ability to dig deeper into the data</li>
+      <li><strong>End-of-shift hand-off and next best action</strong> &mdash; a potential low-hanging use case, <em>depending on data availability</em></li>
+    </ul>
+  
+    <h2>Use cases to land</h2>
+    <p class="lede">Tiered by how much has to be true before they work. The same set appears on the Use Cases tab alongside the Store Director list.</p>
+
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 1</h3><span class="pill p1">Land first</span></div>
+      <p class="tiernote">Runs on content they already have.</p>
+
+      <div class="uc">
+        <p class="uc-t">1. Morning plan of day from the inbox</p>
+        <p class="uc-d">Triage that separates inform from action, then drafts the day&rsquo;s priorities and who they need to connect with.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Inform-versus-action sorting is the stated gate on the plan of day; calendars get rebuilt every morning off that read.</dd>
+          <dt>Unblocks</dt><dd>The front half of the 90 minutes.</dd>
+          <dt>Must be true</dt><dd>Nothing beyond mail and calendar &mdash; this is why it goes first.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">2. Report once, present many</p>
+        <p class="uc-d">One set of facts, rendered into inside-the-building and outside-the-building views without rebuilding each by hand.</p>
+        <dl>
+          <dt>Evidence</dt><dd>They present data back to different audiences in PowerPoint and Excel; they asked directly whether prompts can drive consistent reporting and views.</dd>
+          <dt>Unblocks</dt><dd>Repeat rebuild work, and the inconsistency that comes with it.</dd>
+          <dt>Must be true</dt><dd>A defined set of audience views. Worth capturing two real examples on the next call.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">3. Sunday scheduled prompt</p>
+        <p class="uc-d">A start-of-week package that lands before Monday.</p>
+        <dl>
+          <dt>Evidence</dt><dd>They raised this specifically, unprompted.</dd>
+          <dt>Unblocks</dt><dd>The Monday version of the 90-minute problem.</dd>
+          <dt>Must be true</dt><dd>Agreement on what belongs in it &mdash; best defined once the morning brief exists.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 2</h3><span class="pill p2">Build toward</span></div>
+      <p class="tiernote">Needs data plumbing.</p>
+
+      <div class="uc">
+        <p class="uc-t">4. &ldquo;Health of the building&rdquo; on arrival</p>
+        <p class="uc-d">A single reconciled morning picture across Origami, Greenfield/PBI, Workday and Apollo &mdash; with source disagreements surfaced rather than buried.</p>
+        <dl>
+          <dt>Evidence</dt><dd>The 90-minute morning, and cross-checking driven by conflicting data quality.</dd>
+          <dt>Unblocks</dt><dd>The core of the daily assembly burden.</dd>
+          <dt>Must be true</dt><dd>Connectivity to each source, and a decision on which source wins when two disagree.</dd>
+        </dl>
+        <span class="flag">Flagship</span>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">5. Beyond the single site, beyond the single moment</p>
+        <p class="uc-d">Multi-site and enterprise rollups, plus trending by site.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Dashboards are single-site only; trending is hard to see, &ldquo;good catches&rdquo; the example.</dd>
+          <dt>Unblocks</dt><dd>Pattern recognition and blindspot detection that is not possible today.</dd>
+          <dt>Must be true</dt><dd>Whether any multi-site view exists at any level today.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">6. Depth on demand</p>
+        <p class="uc-d">Customizable views and advanced analytics &mdash; the notebooks conversation.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Sources are large or not specific; data is layered and hard to find; they asked about notebooks by name.</dd>
+          <dt>Unblocks</dt><dd>Analysis that currently stops where the dashboard stops.</dd>
+          <dt>Must be true</dt><dd>Query access to the underlying data, not just the presentation layer.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 3</h3><span class="pill p3">Named by them, gated on data</span></div>
+
+      <div class="uc">
+        <p class="uc-t">7. End-of-shift hand-off and next best action</p>
+        <dl>
+          <dt>Evidence</dt><dd>They called it low-hanging &mdash; <em>and conditioned it on data availability themselves.</em> That condition is the real qualifier, so it sits here rather than in Tier 1.</dd>
+          <dt>Unblocks</dt><dd>Continuity between shifts.</dd>
+          <dt>Must be true</dt><dd>Which shift-level data is actually reachable. Answer this before promising it.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">8. Weekly staffing scenarios</p>
+        <p class="uc-d">Demand, UKG availability, volunteers, overtime, special projects and the performance/attendance lookback in one place, with tradeoffs visible.</p>
+        <dl>
+          <dt>Evidence</dt><dd>A named challenge with an already-defined six-input process.</dd>
+          <dt>Must be true</dt><dd>Whether UKG can be connected, and what that requires.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">9. Streamlined safety capture</p>
+        <p class="uc-d">Lighter data entry, with safety trends surfaced rather than sought.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Safety is the stated top priority; Origami entry was called out specifically.</dd>
+          <dt>Must be true</dt><dd>What safety entry involves today, and what else beyond safety is being keyed in &mdash; the participants were not sure themselves.</dd>
+        </dl>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============ USE CASES ============ -->
+  <section class="panel" id="p4">
+    <h2>Use cases to land</h2>
+    <p class="lede">Tiered by how much has to be true before they work. Tier 1 runs on what they already have; Tier 2 needs content or data connection; Tier 3 needs access to Target systems.</p>
+
+    <h2>Store Director</h2>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 1</h3><span class="pill p1">Land first</span></div>
+      <p class="tiernote">Already proven in their hands, or runs on M365 they already have.</p>
+
+      <div class="uc">
+        <p class="uc-t">1. Deeper email review and action extraction</p>
+        <p class="uc-d">Pull the actions, owners and dates out of the morning email load, and turn metrics and leader recaps into a store-specific read.</p>
+        <dl>
+          <dt>Evidence</dt><dd>They asked for &ldquo;more detailed review of emails&rdquo; by name; the day already starts in the inbox, from home.</dd>
+          <dt>Unblocks</dt><dd>The at-home morning, and the front half of the translation problem.</dd>
+          <dt>Must be true</dt><dd>Nothing beyond mail &mdash; this is why it goes first.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">2. Reliable multi-date calendar capture</p>
+        <p class="uc-d">Take a piece of corporate reading with many dates and land all of them, with the action items attached.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Already using Copilot for auto-adding dates and action items &mdash; <em>and</em> named &ldquo;better at adding multiple dates&rdquo; as the top gap. A working use case with a known ceiling.</dd>
+          <dt>Unblocks</dt><dd>The fifty-dates problem, at the individual level.</dd>
+          <dt>Must be true</dt><dd>Nothing beyond calendar. The fastest credibility win available.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">3. Best practice documentation and leadership development content</p>
+        <dl>
+          <dt>Evidence</dt><dd>Both already in active use, unprompted.</dd>
+          <dt>Unblocks</dt><dd>Directly funds the coaching time they say they want.</dd>
+          <dt>Must be true</dt><dd>Already true. Use these as the reference story for peers.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">4. Team map with responsibilities</p>
+        <dl>
+          <dt>Evidence</dt><dd>Already in use.</dd>
+          <dt>Unblocks</dt><dd>Clear expectations and pipeline visibility, both on the ownership list.</dd>
+          <dt>Must be true</dt><dd>Already true.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 2</h3><span class="pill p2">Build toward</span></div>
+      <p class="tiernote">Needs content or data connection.</p>
+
+      <div class="uc">
+        <p class="uc-t">5. Store-specific morning brief</p>
+        <p class="uc-d">Walk in already oriented: metrics, recaps and what matters today, localized to this store and already triaged.</p>
+        <dl>
+          <dt>Evidence</dt><dd>The at-home email routine exists precisely because this does not.</dd>
+          <dt>Unblocks</dt><dd>The pre-work workaround.</dd>
+          <dt>Must be true</dt><dd>Access to the metrics and recap sources, and a definition of what &ldquo;healthy store today&rdquo; looks like.</dd>
+        </dl>
+        <span class="flag">Flagship</span>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">6. Translation done once</p>
+        <p class="uc-d">Corporate reading localized to this store automatically, instead of every SD deconstructing it alone.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Reading is workstream-specific, not store-specific; the same conversion is repeated across the fleet.</dd>
+          <dt>Unblocks</dt><dd>The duplicated-work problem &mdash; the highest-leverage fix in the set, because it scales across every store at once.</dd>
+          <dt>Must be true</dt><dd>Access to the corporate content pipeline, and store-level context to localize against.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">7. Self-serve reporting and views</p>
+        <p class="uc-d">Report creation on their terms, including the dashboard one SD built because the standard one was not useful.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Named as a want; one SD already routed around the official tooling.</dd>
+          <dt>Unblocks</dt><dd>Excel time, and floor presence.</dd>
+          <dt>Must be true</dt><dd>Access to underlying store data, not just the existing dashboard layer.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">8. Guest feedback analysis</p>
+        <p class="uc-d">Already in use individually; the opportunity is doing it consistently and at scale.</p>
+        <dl>
+          <dt>Evidence</dt><dd>On the current-use list.</dd>
+          <dt>Unblocks</dt><dd>The guest pillar, and potentially the operations/guest correlation.</dd>
+          <dt>Must be true</dt><dd>Which feedback sources are reachable.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 3</h3><span class="pill p3">Gated on system access</span></div>
+
+      <div class="uc">
+        <p class="uc-t">9. Initiative orchestration view</p>
+        <p class="uc-d">All initiatives, dates, owners and confirmations in a single deconflicted place.</p>
+        <dl>
+          <dt>Evidence</dt><dd>12 projects, ~50 dates, multiple pyramids, separate contacts.</dd>
+          <dt>Unblocks</dt><dd>The orchestration burden &mdash; and, if it works upstream, prevents it rather than absorbing it.</dd>
+          <dt>Must be true</dt><dd>Whether initiative data exists anywhere centrally, or only in the SD&rsquo;s head. <strong>Answer before promising it.</strong></dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">10. Closed-loop comms</p>
+        <p class="uc-d">MyDayComms triage and completion confirmation handled in the flow of work.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Triage plus confirmation is a named, compounding obligation.</dd>
+          <dt>Must be true</dt><dd>MyDayComms integration.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">11. Coverage prediction</p>
+        <p class="uc-d">Gaps anticipated and rebalancing pre-suggested before the shift breaks down.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Scheduling named as a major pain point; UKG in progress.</dd>
+          <dt>Must be true</dt><dd>UKG connection &mdash; the same open question as the Site Director side.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">12. Frontline answers on the handheld</p>
+        <p class="uc-d">Any team member gets instant answers &mdash; returns, policy, process steps &mdash; without pulling a leader off task.</p>
+        <dl>
+          <dt>Evidence</dt><dd>The &ldquo;leading down a level&rdquo; pattern in the persona.</dd>
+          <dt>Must be true</dt><dd>Access to policy and process content, plus a handheld surface.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <h2>Supply Chain + Site Director</h2>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 1</h3><span class="pill p1">Land first</span></div>
+      <p class="tiernote">Runs on content they already have.</p>
+
+      <div class="uc">
+        <p class="uc-t">1. Morning plan of day from the inbox</p>
+        <p class="uc-d">Triage that separates inform from action, then drafts the day&rsquo;s priorities and who they need to connect with.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Inform-versus-action sorting is the stated gate on the plan of day; calendars get rebuilt every morning off that read.</dd>
+          <dt>Unblocks</dt><dd>The front half of the 90 minutes.</dd>
+          <dt>Must be true</dt><dd>Nothing beyond mail and calendar &mdash; this is why it goes first.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">2. Report once, present many</p>
+        <p class="uc-d">One set of facts, rendered into inside-the-building and outside-the-building views without rebuilding each by hand.</p>
+        <dl>
+          <dt>Evidence</dt><dd>They present data back to different audiences in PowerPoint and Excel; they asked directly whether prompts can drive consistent reporting and views.</dd>
+          <dt>Unblocks</dt><dd>Repeat rebuild work, and the inconsistency that comes with it.</dd>
+          <dt>Must be true</dt><dd>A defined set of audience views. Worth capturing two real examples on the next call.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">3. Sunday scheduled prompt</p>
+        <p class="uc-d">A start-of-week package that lands before Monday.</p>
+        <dl>
+          <dt>Evidence</dt><dd>They raised this specifically, unprompted.</dd>
+          <dt>Unblocks</dt><dd>The Monday version of the 90-minute problem.</dd>
+          <dt>Must be true</dt><dd>Agreement on what belongs in it &mdash; best defined once the morning brief exists.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 2</h3><span class="pill p2">Build toward</span></div>
+      <p class="tiernote">Needs data plumbing.</p>
+
+      <div class="uc">
+        <p class="uc-t">4. &ldquo;Health of the building&rdquo; on arrival</p>
+        <p class="uc-d">A single reconciled morning picture across Origami, Greenfield/PBI, Workday and Apollo &mdash; with source disagreements surfaced rather than buried.</p>
+        <dl>
+          <dt>Evidence</dt><dd>The 90-minute morning, and cross-checking driven by conflicting data quality.</dd>
+          <dt>Unblocks</dt><dd>The core of the daily assembly burden.</dd>
+          <dt>Must be true</dt><dd>Connectivity to each source, and a decision on which source wins when two disagree.</dd>
+        </dl>
+        <span class="flag">Flagship</span>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">5. Beyond the single site, beyond the single moment</p>
+        <p class="uc-d">Multi-site and enterprise rollups, plus trending by site.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Dashboards are single-site only; trending is hard to see, &ldquo;good catches&rdquo; the example.</dd>
+          <dt>Unblocks</dt><dd>Pattern recognition and blindspot detection that is not possible today.</dd>
+          <dt>Must be true</dt><dd>Whether any multi-site view exists at any level today.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">6. Depth on demand</p>
+        <p class="uc-d">Customizable views and advanced analytics &mdash; the notebooks conversation.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Sources are large or not specific; data is layered and hard to find; they asked about notebooks by name.</dd>
+          <dt>Unblocks</dt><dd>Analysis that currently stops where the dashboard stops.</dd>
+          <dt>Must be true</dt><dd>Query access to the underlying data, not just the presentation layer.</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tierhead"><h3>Tier 3</h3><span class="pill p3">Named by them, gated on data</span></div>
+
+      <div class="uc">
+        <p class="uc-t">7. End-of-shift hand-off and next best action</p>
+        <dl>
+          <dt>Evidence</dt><dd>They called it low-hanging &mdash; <em>and conditioned it on data availability themselves.</em> That condition is the real qualifier, so it sits here rather than in Tier 1.</dd>
+          <dt>Unblocks</dt><dd>Continuity between shifts.</dd>
+          <dt>Must be true</dt><dd>Which shift-level data is actually reachable. Answer this before promising it.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">8. Weekly staffing scenarios</p>
+        <p class="uc-d">Demand, UKG availability, volunteers, overtime, special projects and the performance/attendance lookback in one place, with tradeoffs visible.</p>
+        <dl>
+          <dt>Evidence</dt><dd>A named challenge with an already-defined six-input process.</dd>
+          <dt>Must be true</dt><dd>Whether UKG can be connected, and what that requires.</dd>
+        </dl>
+      </div>
+
+      <div class="uc">
+        <p class="uc-t">9. Streamlined safety capture</p>
+        <p class="uc-d">Lighter data entry, with safety trends surfaced rather than sought.</p>
+        <dl>
+          <dt>Evidence</dt><dd>Safety is the stated top priority; Origami entry was called out specifically.</dd>
+          <dt>Must be true</dt><dd>What safety entry involves today, and what else beyond safety is being keyed in &mdash; the participants were not sure themselves.</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUESTIONS ============ -->
+  <section class="panel" id="p5">
+    <h2>Open questions, by use case</h2>
+    <p class="lede">Only what is still unresolved, tied to the use case it gates.</p>
+
+    <div class="legend">
+      <div><span class="tag tag-a">ASK</span> <span>Goes to the customer on the next call or visit</span></div>
+      <div><span class="tag tag-v">VALIDATE</span> <span>Ours to answer internally or with the account team</span></div>
+    </div>
+
+    <h2>Store Director</h2>
+
+    <div class="qgroup">
+      <h3>Gates use case 1 &mdash; Email review and action extraction</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>Walk me through your morning before you get to the store &mdash; what are you reading, and where?</p></div>
+      <div class="q"><span class="tag tag-a">ASK</span><p>How much of that reading is genuinely actionable versus informational?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>How widespread is the at-home morning routine across the SD population?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use case 2 &mdash; Multi-date calendar capture</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>Where does it break today &mdash; volume of dates, the format they arrive in, or something else?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use case 5 &mdash; Store-specific morning brief</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>What tells you the store is healthy? Is that one number or several?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Which metric and recap sources are reachable?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use case 6 &mdash; Translation done once</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>When corporate reading comes through, how much of it applies to your store as written?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Where does corporate content originate, and could localization happen upstream instead of per store?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use case 7 &mdash; Self-serve reporting</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>What did the dashboard you built do that the standard one did not?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>How many SDs have built their own workarounds &mdash; dashboards, trackers, spreadsheets?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Is there access to underlying store data, or only to the existing dashboard layer?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use case 9 &mdash; Initiative orchestration</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>How many active initiatives are you tracking, and how many different people own them?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Is the ~12 projects / ~50 dates figure typical or an outlier store?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Does initiative data exist centrally anywhere, or only with each pyramid owner?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use cases 10 and 11 &mdash; Closed-loop comms, coverage prediction</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>How is UKG changing your scheduling day-to-day &mdash; better, worse, or just different?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>What does MyDayComms integration require?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>What is the UKG rollout timeline, and who owns it?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Cross-cutting</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>If you got two hours back tomorrow, what would you actually do with them?</p></div>
+      <div class="q"><span class="tag tag-a">ASK</span><p>When was the last time you did a real store walk &mdash; not fixing something, just observing?</p></div>
+      <div class="q"><span class="tag tag-a">ASK</span><p>Are your team leads stuck in task mode too?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Does the low-guest-metrics / operational-issues correlation hold in the data?</p></div>
+    </div>
+
+    <h2>Supply Chain + Site Director</h2>
+
+    <div class="qgroup">
+      <h3>Gates use case 1 &mdash; Morning plan of day</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>Walk me through the 90 minutes &mdash; what are you pulling, in what order, and where does it take longest?</p></div>
+      <div class="q"><span class="tag tag-a">ASK</span><p>What tells you the building is healthy? Is that one number or several?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Is 90 minutes typical across sites, or specific to the participants on this call?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use case 2 &mdash; Report once, present many</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>Where does &ldquo;outside the building&rdquo; reporting differ most from &ldquo;inside the building&rdquo;?</p></div>
+      <div class="q"><span class="tag tag-a">ASK</span><p>Can we take two real examples of each to work from?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use case 4 &mdash; Health of the building</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>When two sources disagree, which one wins, and how do you decide?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Which sources are technically reachable today, and which are not?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Who owns data quality across Origami, Greenfield, Workday and Apollo? Is anyone reconciling upstream?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>What is the Greenfield &rarr; Power BI timeline, and who owns it?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use cases 5 and 6 &mdash; Multi-site, trending, depth</h3>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>What multi-site or enterprise views exist today at any level &mdash; or is the gap total?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Is there query access to underlying data, or only to the presentation layer?</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use case 7 &mdash; End-of-shift hand-off</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>What would a good hand-off actually contain?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Which shift-level data is reachable? This is the condition they set themselves.</p></div>
+    </div>
+
+    <div class="qgroup">
+      <h3>Gates use cases 8 and 9 &mdash; Staffing, safety capture</h3>
+      <div class="q"><span class="tag tag-a">ASK</span><p>Which input is hardest to get: demand, availability, volunteers, or the lookback?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>Can UKG be connected, and what would that require?</p></div>
+      <div class="q"><span class="tag tag-v">VALIDATE</span><p>What data entry exists beyond safety? The participants were not sure themselves.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ ON THE VISIT ============ -->
+  <section class="panel" id="p6">
+    <h2>Store visit &mdash; what to observe</h2>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Signals</h3>
+        <ul>
+          <li><strong>The morning routine</strong> &mdash; what they read before arriving, and what they check first once in the building.</li>
+          <li><strong>Disconnected tools</strong> &mdash; inventory every distinct device, app and screen the SD and team leads touch. Literally count them. Watch for reconciling two screens by hand or re-keying.</li>
+          <li><strong>Prioritization</strong> &mdash; how the day&rsquo;s priorities are communicated; whether a single visible &ldquo;what matters most today&rdquo; exists.</li>
+          <li><strong>Workload volatility</strong> &mdash; how coverage is displayed and how often it is re-jockeyed; whether the SD is covering a task rather than leading.</li>
+          <li><strong>Interruptions</strong> &mdash; count redirections during the walk, and what triggers each.</li>
+          <li><strong>Empowerment</strong> &mdash; which decisions are made on the spot versus escalated.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>By pillar</h3>
+        <p><strong>Guest</strong> &mdash; in-stock and on-shelf availability, checkout and guest services wait times, live guest recovery, friction points.</p>
+        <p><strong>Team</strong> &mdash; huddles, visible recognition, onboarding of new or seasonal members, shift-to-shift handoffs.</p>
+        <p><strong>Operations</strong> &mdash; backroom and fulfillment flow, task tracking, exception handling, paper versus digital, duplicate entry.</p>
+        <p><strong>Financials</strong> &mdash; which dashboards are actually used, data freshness, one view or many.</p>
+        <p style="margin-block-start:12px"><strong>Ownership cross-check</strong> &mdash; culture and recognition (visible or ad hoc?), leadership pipeline (developing TLs or filling gaps?), brand image, community engagement.</p>
+      </div>
+    </div>
+
+    <h2>Site visit &mdash; what to observe</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>The daily rhythm</h3>
+        <ul>
+          <li><strong>The morning routine</strong> &mdash; which systems open first, how many logins, where cross-checking happens, and how the plan of day gets written down.</li>
+          <li><strong>Data assembly</strong> &mdash; count the sources touched to answer one question. Watch for reconciling two screens by hand, re-keying, or rebuilding the same view.</li>
+          <li><strong>Dashboards in use</strong> &mdash; which are actually opened, how current the data is, and what gets exported to Excel immediately after.</li>
+          <li><strong>Shift hand-off</strong> &mdash; what is captured, how, and what is lost between shifts.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>The work products</h3>
+        <ul>
+          <li><strong>Data entry</strong> &mdash; where it happens, how long it takes, and whether the same fact is entered twice. Safety entry specifically.</li>
+          <li><strong>Reporting</strong> &mdash; what gets rebuilt in PowerPoint or Excel, for whom, and how often.</li>
+          <li><strong>Staffing build</strong> &mdash; if timing allows, observe the weekly plan being assembled and note each input source.</li>
+          <li><strong>Safety</strong> &mdash; how safety data surfaces in the daily rhythm, and whether trending (good catches) is visible or has to be requested.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>How to make it land</h2>
+    <div class="callout">
+      <p>Do not lead with capabilities. <strong>Capture one or two vivid moments</strong> &mdash; an SD connecting dots or leading down a level, a Site Director cross-checking two systems that disagree &mdash; and in the follow-up, play that exact moment back, solved. Nothing sells meaningful change like their own building&rsquo;s example.</p>
+    </div>
+  </section>
+
+  </div>
+</div>
+
+<footer>
+  <p>Compiled from the Target Store Director future-state persona materials, Store Director call notes, and the Supply Chain + Site Director discovery call. Working reference &mdash; internal use.</p>
+</footer>
+
+</div>
+</body>
+</html>

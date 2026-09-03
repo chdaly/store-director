@@ -12,7 +12,15 @@
 
 | Name | Role | Charter | Status |
 |------|------|---------|--------|
-
+| Lead | Experience Lead | .squad/agents/lead/charter.md | 🏗️ Active |
+| Narrative | Content Designer | .squad/agents/narrative/charter.md | 📝 Active |
+| Data | BI Simulator | .squad/agents/data/charter.md | 📊 Active |
+| Frontend | Prototype Dev | .squad/agents/frontend/charter.md | ⚛️ Active |
+| Tester | Demo QA | .squad/agents/tester/charter.md | 🧪 Active |
+| Scribe | Session Logger | .squad/agents/scribe/charter.md | 📋 Scribe |
+| Ralph | Work Monitor | .squad/agents/ralph/charter.md | 🔄 Monitor |
+| Rai | RAI Reviewer | .squad/agents/Rai/charter.md | 🛡️ RAI |
+| Fact Checker | Fact Checker | .squad/agents/fact-checker/charter.md | 🔍 Verifier |
 
 ## Coding Agent
 
@@ -50,4 +58,8 @@
 ## Project Context
 
 - **Project:** store-director
+- **Owner:** Chris Daly
+- **Goal:** A shareable, fully self-contained HTML page simulating how M365 Copilot + Power BI transforms data consumption for Target Store Directors — replacing morning report prep and review with narrative delivery.
+- **Deliverable:** One `.html` file, zero external dependencies, runs from `file://`
+- **Background research:** `docs/store-director-background/`
 - **Created:** 2026-09-03

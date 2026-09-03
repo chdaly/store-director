@@ -1,3 +1,44 @@
 {
-  "agents": {}
+  "agents": {
+    "lead": {
+      "persistent_name": "Lead",
+      "role": "Experience Lead",
+      "universe": "descriptive",
+      "created_at": "2026-09-03T18:11:16-05:00",
+      "legacy_named": false,
+      "status": "active"
+    },
+    "narrative": {
+      "persistent_name": "Narrative",
+      "role": "Content Designer",
+      "universe": "descriptive",
+      "created_at": "2026-09-03T18:11:16-05:00",
+      "legacy_named": false,
+      "status": "active"
+    },
+    "data": {
+      "persistent_name": "Data",
+      "role": "BI Simulator",
+      "universe": "descriptive",
+      "created_at": "2026-09-03T18:11:16-05:00",
+      "legacy_named": false,
+      "status": "active"
+    },
+    "frontend": {
+      "persistent_name": "Frontend",
+      "role": "Prototype Dev",
+      "universe": "descriptive",
+      "created_at": "2026-09-03T18:11:16-05:00",
+      "legacy_named": false,
+      "status": "active"
+    },
+    "tester": {
+      "persistent_name": "Tester",
+      "role": "Demo QA",
+      "universe": "descriptive",
+      "created_at": "2026-09-03T18:11:16-05:00",
+      "legacy_named": false,
+      "status": "active"
+    }
+  }
 }

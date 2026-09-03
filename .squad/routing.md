@@ -6,9 +6,15 @@ How to decide who handles what.
 
 | Work Type | Route To | Examples |
 |-----------|----------|----------|
+| Scope, scenario arc, demo structure | Lead | "What does the demo show first?", cutting scope, final review |
+| Copilot response copy, SD dialogue, persona voice | Narrative | Morning brief text, chat prompts, microcopy, insight framing |
+| Synthetic metrics, chart specs, PBI visual grammar | Data | Store dataset, KPI definitions, trend consistency, variance math |
+| HTML/CSS/JS implementation, SVG charts, packaging | Frontend | Building the page, inlining assets, interactions, animation |
+| Portability, offline, a11y, cross-browser verification | Tester | `file://` checks, external-request audit, contrast, keyboard nav |
+| Research grounding, claim verification, devil's advocate | Fact Checker | "Does the research support this?", pre-mortem on the demo narrative |
+| Content safety, synthetic-data disclosure, fairness | Rai | Illustrative-data labeling, persona representation, harmful patterns |
 
-Preset installation adds concrete routes for the configured team. Add or edit rows
-here only when their agent names also exist in the casting registry.
+Add or edit rows here only when their agent names also exist in the casting registry.
 
 ## Issue Routing
 

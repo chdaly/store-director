@@ -25,3 +25,9 @@
 - Re-reviewed Lead's non-author revision and issued GO after all defects were fixed with no regressions.
 - Learning: dark-theme contrast was a real accessibility failure that light-theme-only testing completely missed; include theme-specific contrast checks in future demo QA.
 - Propagated learning: independently parse and sum agent-produced numeric data where drill-down levels must reconcile; computation caught failures prose did not.
+
+## 2026-09-03T22:30:00-05:00 — Copilot UI QA pass #1
+- First QA pass for `store-director-copilot.html` issued NO-GO: interaction rewiring mostly passed, all Recent items loaded full prior conversations, self-containment/runtime-network/console checks passed, and numeric integrity including 14h/9h reconciliation passed.
+- Blocking learnings: fixed-height disclosures are unsafe on mobile even when computed contrast is excellent; always visually inspect the smallest viewport for trust/safety text clipping or overlap.
+- Responsive learning: document-level horizontal-scroll checks can pass while a clipped overflow-hidden parent hides content; inspect element bounding boxes against viewport and screenshots.
+- Accessibility learning: state feedback/popovers do not replace a visible focus ring on the focused control; expander patterns need explicit `aria-expanded` and `aria-controls`.

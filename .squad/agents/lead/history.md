@@ -26,3 +26,15 @@
 - Learning: reviewer lockout works best when the revision owner preserves source data/copy constraints and changes only rejected defects.
 - Propagated learning: verify agent-produced numeric data by computation; prose review missed cross-level arithmetic defects twice.
 - Propagated learning: dark-theme contrast must be tested directly; light-theme-only testing missed a real accessibility failure.
+
+## 2026-09-03T22:01:35-05:00 — Copilot mockup disclosure persistence fix
+- Took independent non-author revision ownership after Rai's red verdict locked Frontend out of `store-director-copilot.html`.
+- Learning: for high-fidelity product mockups, the synthetic-data disclosure must be viewport-fixed or equivalently persistent; a static banner can pass desktop QA while failing mobile screenshots.
+- Learning: mobile disclosure checks must measure child text geometry, not just the banner box; a fixed-height flex banner can have a visible container while its wrapped text is clipped above the viewport.
+- Learning: visual contact-sheet review remains mandatory even after geometry, console, network, and contrast checks pass.
+
+## 2026-09-03T22:09:46-05:00 — Copilot UI QA follow-up fixes
+- Fixed Tester's remaining `store-director-copilot.html` QA findings as the independent lockout owner: tablet KPI clipping, composer focus visibility, and prompt tray ARIA state.
+- Learning: after wrapping responsive content, verify both axes; a horizontal clipping fix can accidentally push required executive-viewport content below the visible viewport.
+- Learning: focus-ring contrast must be checked per theme and per adjacent surface; the light-theme purple ring passed while the same ring failed dark active rail surfaces.
+- Learning: expander ARIA must be runtime-verified through actual toggles, not just static attributes in source.

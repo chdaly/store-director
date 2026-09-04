@@ -72,3 +72,26 @@
 - **Severity:** Deferred advisory
 - **Redacted finding:** Retailer-coded fictional identifier/name remains unchanged by user direction; not treated as a defect in this pass.
 - **Remediation status:** Deferred by user.
+
+## 2026-09-03T21:54:58-05:00 — Store Director Copilot UI RAI review
+
+- **Artifact:** `store-director-copilot.html`
+- **Verdict:** 🔴 Red
+- **Reviewer:** Rai
+- **Evidence:** `store-director-copilot.html` lines 109, 151, and mobile screenshots in `.squad/.scratch/visual-qa/rai-copilot/16-mobile-morning-light.png`, `17-mobile-composer-tray-light.png`, `18-mobile-morning-dark.png`
+- **Category:** Deceptive pattern risk / high-fidelity product simulation disclosure
+- **Severity:** Critical
+- **Redacted finding:** In narrow and scrolled mobile states, the high-fidelity Copilot-like UI can appear without a complete visible simulation/product-status disclosure; existing text also does not explicitly deny live M365 product or roadmap status.
+- **Remediation status:** Required before ship. Original author Frontend is locked out; recommended fix owner is Lead.
+
+- **Evidence:** `store-director-copilot.html` line 109 and screenshots `01-morning-light.png`, `14-morning-dark.png`, `16-mobile-morning-light.png`
+- **Category:** Brand/reference hygiene
+- **Severity:** Advisory
+- **Redacted finding:** Visible retailer-specific negative disclaimer is riskier in a first-person high-fidelity product mockup; previously deferred retailer-coded identifiers remain deferred and are not treated as Critical.
+- **Remediation status:** Recommended neutralization or explicit decision exception.
+
+- **Evidence:** `store-director-copilot.html` lines 128-129, 141, 711-717 and rendered screenshots/text for all captured states
+- **Category:** Causal overreach
+- **Severity:** Pass
+- **Redacted finding:** Guest/Operations relationship is framed as signal, observation, watchpoint, or testing rather than proven causation in reviewed rendered states.
+- **Remediation status:** No action needed.

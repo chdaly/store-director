@@ -18,3 +18,11 @@
 ## Learnings
 
 <!-- Append new learnings below. Each entry is something lasting about the project. -->
+
+
+## 2026-09-03T19:45:00-05:00 — Simulation copy and voice system
+- Produced scene copy, control/chart accessibility inventory, and voice-and-tone guidance for the Store Director walkthrough.
+- Used a `{FULFILLMENT_GAP_HRS}` placeholder while Data repaired the metric, then aligned to the corrected 9-hour Fulfillment gap.
+- Learning: placeholders are safe only when explicitly named and later resolved before build handoff.
+- Propagated learning: numeric claims in copy should be tied to computed dataset checks, not prose interpretation alone.
+- Propagated learning: synthetic-data disclosure must remain readable in dark mode because it is both an accessibility and trust requirement.

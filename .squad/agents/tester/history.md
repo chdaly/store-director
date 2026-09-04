@@ -18,3 +18,10 @@
 ## Learnings
 
 <!-- Append new learnings below. Each entry is something lasting about the project. -->
+
+
+## 2026-09-03T19:45:00-05:00 — Simulation QA rejection and re-review
+- Performed initial QA and issued NO-GO for dark-theme contrast, heading hierarchy, and Scene 2 ARIA tabs defects while confirming other runtime, fidelity, and offline checks passed.
+- Re-reviewed Lead's non-author revision and issued GO after all defects were fixed with no regressions.
+- Learning: dark-theme contrast was a real accessibility failure that light-theme-only testing completely missed; include theme-specific contrast checks in future demo QA.
+- Propagated learning: independently parse and sum agent-produced numeric data where drill-down levels must reconcile; computation caught failures prose did not.

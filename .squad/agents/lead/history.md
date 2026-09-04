@@ -18,3 +18,11 @@
 ## Learnings
 
 <!-- Append new learnings below. Each entry is something lasting about the project. -->
+
+
+## 2026-09-03T19:45:00-05:00 — Store Director simulation planning and QA revision
+- Planned the approved 8-scene guided walkthrough and resolved scope defaults around retail credibility, time claims, four-pillar store health, and neutral naming.
+- Took non-author ownership of the QA revision after reviewer lockout and fixed only the approved accessibility defects.
+- Learning: reviewer lockout works best when the revision owner preserves source data/copy constraints and changes only rejected defects.
+- Propagated learning: verify agent-produced numeric data by computation; prose review missed cross-level arithmetic defects twice.
+- Propagated learning: dark-theme contrast must be tested directly; light-theme-only testing missed a real accessibility failure.

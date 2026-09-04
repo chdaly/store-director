@@ -18,3 +18,10 @@
 ## Learnings
 
 <!-- Append new learnings below. Each entry is something lasting about the project. -->
+
+
+## 2026-09-03T19:45:00-05:00 — Simulation dataset and chart model
+- Produced the synthetic Store Director dataset, drill-down metrics, Power BI-style chart specs, and accessible palette.
+- Reworked two numeric consistency defects: Saturday afternoon department gap hours and pickup-order drill-down reconciliation.
+- Learning: cross-level arithmetic in drill-down data failed twice and was caught only by independently parsing and summing JSON, not by reading prose. Future dataset handoffs need computed reconciliation checks.
+- Propagated learning: dark-theme contrast can affect trust labels and disclosures even when the data palette itself is accessible.

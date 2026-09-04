@@ -18,3 +18,10 @@
 ## Learnings
 
 <!-- Append new learnings below. Each entry is something lasting about the project. -->
+
+
+## 2026-09-03T19:45:00-05:00 — Initial single-file simulation build
+- Built `store-director-simulation.html` as a self-contained offline HTML artifact with inline CSS, JavaScript, SVG charts, embedded STORE_DATA, and guided interactions.
+- Tester rejected the first build factually for one Major dark-theme contrast defect and two Minor accessibility defects. Under reviewer protocol, Frontend was locked out from revising the authored artifact; Lead owned the repair.
+- Learning: run dark-theme contrast checks and complete ARIA interaction patterns before QA handoff, especially for persistent trust/disclosure text.
+- Propagated learning: data embedded in the artifact should be mechanically reconciled because cross-level arithmetic errors can survive prose review.

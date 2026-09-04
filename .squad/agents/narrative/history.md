@@ -26,3 +26,9 @@
 - Learning: placeholders are safe only when explicitly named and later resolved before build handoff.
 - Propagated learning: numeric claims in copy should be tied to computed dataset checks, not prose interpretation alone.
 - Propagated learning: synthetic-data disclosure must remain readable in dark mode because it is both an accessibility and trust requirement.
+
+## 2026-09-03T23:19:57-05:00 — Retailer-name neutralization in persistent disclosure
+- Changed the fixed synthetic-data disclosure from “not Target operational data” to “not real retailer operational data.”
+- Also neutralized embedded retailer-name disclosure strings while preserving the explicitly deferred fictional identifiers `SIM-TGT-9001` and “Bullseye Bay Innovation Store.”
+- Learning: fixed, always-visible disclosure copy needs brand-sensitivity review because screenshots preserve the pairing of simulated data with recognizable product chrome.
+- Verification learning: geometry checks are necessary but insufficient for longer banner strings; viewport screenshots must be visually inspected, especially at 390px mobile width.

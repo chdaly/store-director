@@ -95,3 +95,26 @@
 - **Severity:** Pass
 - **Redacted finding:** Guest/Operations relationship is framed as signal, observation, watchpoint, or testing rather than proven causation in reviewed rendered states.
 - **Remediation status:** No action needed.
+
+## 2026-09-03T22:16:19-05:00 — Store Director Copilot UI RAI re-review
+
+- **Artifact:** `store-director-copilot.html`
+- **Verdict:** 🟡 Yellow
+- **Reviewer:** Rai
+- **Evidence:** `store-director-copilot.html` disclosure/layout lines 16-113 and screenshots/results in `.squad/.scratch/visual-qa/rai-rereview/`; Playwright relevant disclosure validation sample count 108, failures 0.
+- **Category:** Deceptive pattern risk / high-fidelity product simulation disclosure
+- **Severity:** Prior Critical fixed
+- **Redacted finding:** Fixed disclosure remains pinned and legible across tested viewports, themes, Recent conversations, and scroll positions; no new banner-overlap RAI issue found.
+- **Remediation status:** Fixed.
+
+- **Evidence:** `store-director-copilot.html` line 113 and visual screenshots in `.squad/.scratch/visual-qa/rai-rereview/`
+- **Category:** Brand/reference hygiene
+- **Severity:** Advisory
+- **Redacted finding:** Retailer-specific negative disclaimer is now pinned and therefore more prominent; still deferred under Option A and not escalated to Critical.
+- **Remediation status:** Recommended neutral wording or explicit user exception.
+
+- **Evidence:** `store-director-copilot.html` lines 132-145, 715-721 and rendered prompt/Recent screenshots/text in `.squad/.scratch/visual-qa/rai-rereview/`
+- **Category:** Causal overreach
+- **Severity:** Pass
+- **Redacted finding:** Guardrail and signal/testing language remain in reviewed paths; no proven-causation framing regression found.
+- **Remediation status:** No action needed.

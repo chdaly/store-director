@@ -20,3 +20,8 @@ Initial setup complete.
 - In first-person, high-fidelity product mockups, a generic data-only disclosure is not enough. The UI must also state product status: not live, not a Microsoft commitment, not for operational decisions.
 - Desktop-only persistence is insufficient. Mobile/narrow screenshots and mid-scroll states must be reviewed visually because top banners can clip or scroll away even when `innerText` contains the right words.
 - Causal-overreach review should include rendered prompt responses and Recent conversations; source scans alone can miss whether guardrails are actually on the same visible view.
+
+## 2026-09-03 — Disclosure re-review after fixed banner
+
+- Persistent disclosure fixes should be verified both by geometry checks and by visual inspection. Geometry can produce false positives for scrolled content under a fixed banner; RAI-relevant checks are whether the disclosure remains visible/legible and whether top-of-page content starts below it.
+- A formerly advisory brand reference can become more salient when pinned globally, but under explicit user deferral it remains Advisory unless the content changes into a deceptive or harmful claim.

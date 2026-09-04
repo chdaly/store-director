@@ -94,3 +94,91 @@ Pass for RAI/security scope. I found no hardcoded secrets, API keys, tokens, pas
 ## Final gate
 
 🔴 **Red.** Fix the persistent disclosure/product-status issue before ship. Recommended revision owner: **Lead**. Frontend is locked out for the next revision cycle for this artifact.
+
+---
+
+# 🟡 Yellow — RAI re-review after Lead disclosure fix
+
+**Reviewer:** Rai, Responsible AI Reviewer  
+**Date:** 2026-09-03T22:16:19-05:00  
+**Artifact:** `store-director-copilot.html`  
+**Review type:** Re-review of prior Critical after Lead revision. Frontend remained locked out per reviewer protocol.
+
+## Verdict
+
+🟡 **Yellow** — the prior 🔴 Critical is resolved. Work may proceed from the RAI gate with one non-blocking Advisory still open: the pinned disclosure still names Target in visible UI.
+
+## Evidence reviewed
+
+- Source reviewed: `store-director-copilot.html` disclosure/layout and interaction code around lines 16-113, 124-152, and 715-748.
+- Screenshots and rendered text captured to `.squad/.scratch/visual-qa/rai-rereview/`.
+- Playwright geometry validation covered **108 disclosure samples**: 3 viewports (`1440x900`, `1024x768`, `390x844`) × 2 themes × 6 Recent conversations × 3 scroll positions (`top`, `mid`, `bottom`). Relevant disclosure failures: **0**.
+- Prompt paths were also captured for five top prompt chips and five composer-tray prompt activations across desktop/mobile and light/dark themes.
+- Console errors: **0**. Prompt tray ARIA check passed: `aria-controls="composerPrompts"`; `aria-expanded` toggles `false → true → false`.
+
+## Prior 🔴 Critical — Fixed
+
+**Prior issue:** The high-fidelity Copilot-style UI could be screenshotted on mobile/scrolled states without a complete visible simulation label.
+
+**Current status:** Fixed. The disclosure banner is fixed at the top of the viewport, remains legible in desktop/tablet/mobile and light/dark themes, and does not scroll away in Recent conversations, prompt responses, or composer-tray states. I visually inspected representative top/mid/bottom screenshots, including mobile mid-scroll and dark-theme states, and confirmed the banner remains unmissable.
+
+**New-overlap check:** Pass. At top-of-page load, the fixed banner does not cover the Copilot header or first conversation line. In scrolled mobile states, content can pass underneath the fixed banner, but the banner remains readable and the current viewport still presents content below it; I found no new RAI issue from overlap/crowding.
+
+## Regression checks
+
+### Causal overreach — Pass
+
+No regression found. The morning brief still places the causal guardrail on the same view as the Guest/Operations relationship:
+
+> This simulation treats the Guest and Operations relationship as a signal worth testing. It does not assert proven causation.
+
+Rendered prompt and Recent states continue to use signal/testing language rather than proven causation:
+
+- `priority`: “observation target, not a proven single cause.”
+- `saturday`: “the afternoon row is the one to test in person.”
+- `huddle`: “testing the pickup handoff signal.”
+- `weekend`: “watchpoint,” not root cause.
+- `payroll`: explicitly warns not to overread the weekly payroll card.
+- `driveup`: “Use the staffing lens carefully.”
+
+### AI reliability / human judgment — Pass
+
+No regression. The footer still says “Copilot can make mistakes,” source chips remain visible, and recommendations are framed as human observation and verification: walk, watch, check, test in person, and verify role clarity.
+
+### Labor and workforce implications — Pass
+
+No regression. Payroll and coverage language remains operational without blaming or surveilling named workers. The artifact recommends human leader review, not automated scheduling or discipline.
+
+### Guest / employee PII — Pass
+
+No real guest or employee identifiers found. Role labels and aggregate synthetic operational metrics are not individually identifying.
+
+### Credentials / injection — Pass
+
+No hardcoded secrets, network calls, `eval`, command execution, or unsanitized user input path found. `innerHTML` remains limited to hardcoded scripted content; free-text composer input is immediately cleared and does not flow into rendered HTML.
+
+## 🟡 Advisory — Visible Target reference is now more prominent
+
+**What is wrong**
+
+The pinned disclosure still says the values “are not Target operational data.” This is not a Critical under the accepted Option A scope and internal Innovation Hub audience, and the prior `SIM-TGT-9001` / “Bullseye Bay” item remains deferred. However, the Target reference is now pinned to every screen and every scroll position, so the Advisory is more salient than before.
+
+**Why it matters**
+
+A persistent retailer-specific disclaimer can anchor forwarded screenshots to a real retailer even when the statement is negative. That increases brand sensitivity in a high-fidelity Microsoft-style first-person interface.
+
+**How to fix**
+
+Recommended replacement wording:
+
+> **Illustrative simulation data only. Store, sales, labor, guest, and operations values are synthetic and are not real retailer operational data.**
+
+Alternative if the team wants to preserve the product-status caveat in the same banner:
+
+> **Simulation only. Not a live M365 Copilot product or Microsoft commitment. Synthetic retail data; not real retailer operational data.**
+
+If the user chooses to retain the Target wording for internal Innovation Hub clarity, document that as an explicit exception and proceed.
+
+## Final gate
+
+🟡 **Yellow.** Prior Critical fixed; no new Critical found. Only the Target wording Advisory remains, pending user decision.

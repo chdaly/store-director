@@ -31,3 +31,8 @@
 - Blocking learnings: fixed-height disclosures are unsafe on mobile even when computed contrast is excellent; always visually inspect the smallest viewport for trust/safety text clipping or overlap.
 - Responsive learning: document-level horizontal-scroll checks can pass while a clipped overflow-hidden parent hides content; inspect element bounding boxes against viewport and screenshots.
 - Accessibility learning: state feedback/popovers do not replace a visible focus ring on the focused control; expander patterns need explicit `aria-expanded` and `aria-controls`.
+
+## 2026-09-03T22:55:00-05:00 — Copilot UI QA re-review GO
+- Re-reviewed Lead's non-author fixes to `store-director-copilot.html` and issued GO. All four prior findings resolved: mobile disclosure, 1024 KPI clipping, composer focus ring, and prompt-tray ARIA.
+- Re-ran full click-response audit: no dead controls. The only prior “mostly works” exception was the composer input, which now responds with near feedback, opens the tray, flips aria-expanded, and has a visible focus-within ring.
+- Learning: citation-looking chips should be explicitly classified in QA. Here they are non-interactive spans with no pointer cursor and no tab stop, so they are not dead controls.

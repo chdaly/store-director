@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Store Director Copilot Morning Brief</title>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<style>
+:root {
+  color-scheme: light;
+  --cp-bg: #f7f4ef;
+  --cp-bg-elevated: #fcfbf8;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #f5f5f5;
+  --cp-border: #dedede;
+  --cp-border-strong: #919191;
+  --cp-text: #242424;
+  --cp-text-muted: #5c5c5c;
+  --cp-text-soft: #6f6f6f;
+  --cp-accent: #b11f4b;
+  --cp-accent-hover: #9a1a41;
+  --cp-accent-soft: rgba(177, 31, 75, 0.08);
+  --cp-accent-fg: #ffffff;
+  --cp-success: #16a34a;
+  --cp-danger: #dc2626;
+  --cp-warning: #f59e0b;
+  --cp-link: #0078d4;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+  --cp-overlay: rgba(255, 255, 255, 0.8);
+  --cp-panel: rgba(255, 255, 255, 0.86);
+  --cp-panel-strong: rgba(255, 255, 255, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.55);
+  --cp-highlight: rgba(177, 31, 75, 0.12);
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #3d3b3a;
+  --cp-bg-elevated: #343231;
+  --cp-surface: #292929;
+  --cp-surface-soft: #2e2e2e;
+  --cp-border: #474747;
+  --cp-border-strong: #5f5f5f;
+  --cp-text: #dedede;
+  --cp-text-muted: #919191;
+  --cp-text-soft: #b0b0b0;
+  --cp-accent: #fd8ea1;
+  --cp-accent-hover: #fb7b91;
+  --cp-accent-soft: rgba(253, 142, 161, 0.14);
+  --cp-accent-fg: #1a1a1a;
+  --cp-success: #4ade80;
+  --cp-danger: #f87171;
+  --cp-warning: #fbbf24;
+  --cp-link: #4da6ff;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  --cp-overlay: rgba(41, 41, 41, 0.88);
+  --cp-panel: rgba(41, 41, 41, 0.72);
+  --cp-panel-strong: rgba(41, 41, 41, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.04);
+  --cp-highlight: rgba(253, 142, 161, 0.12);
+}
+:root{--co-blue:#0078d4;--co-cyan:#36d6ff;--co-purple:#7c3aed;--co-pink:#e3008c;--good-text:#0f6c2f;--warn-text:#6f4f00;--bad-text:#a4262c}
+html[data-theme="dark"]{--good-text:#7ee49c;--warn-text:#ffd766;--bad-text:#ff99a4}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--cp-bg);color:var(--cp-text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.45;overflow:hidden}
+button,input{font:inherit}button{color:inherit}:focus-visible{outline:3px solid var(--co-purple);outline-offset:3px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.disclosure{height:40px;padding:8px 18px;display:flex;gap:10px;align-items:center;justify-content:center;background:var(--cp-panel-strong);color:var(--cp-text);border-bottom:1px solid var(--cp-border);font-size:13px;font-weight:650;text-align:center}
+.disclosure .badge{border:1px solid var(--cp-border-strong);border-radius:999px;padding:2px 8px;background:var(--cp-surface-soft);font-size:12px}
+.app{height:calc(100vh - 40px);display:grid;grid-template-columns:300px minmax(0,1fr);background:var(--cp-bg-elevated);min-height:0}
+.sidebar{border-right:1px solid var(--cp-border);background:var(--cp-panel);display:grid;grid-template-columns:56px 1fr}
+.rail{border-right:1px solid var(--cp-border);padding:10px 8px;display:flex;flex-direction:column;gap:8px;align-items:center}
+.rail-btn{width:40px;height:40px;border:0;border-radius:10px;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--cp-text-muted)}
+.rail-btn.active{background:var(--cp-accent-soft);color:var(--cp-text)}.rail-btn:hover,.history-list button:hover,.chip:hover,.icon-button:hover{background:var(--cp-surface-soft)}
+svg.icon{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.history{padding:16px 12px;min-width:0}.new-chat{width:100%;border:1px solid var(--cp-border);background:var(--cp-surface);border-radius:10px;padding:9px 10px;text-align:left;cursor:pointer;margin-bottom:16px;font-weight:650}
+.history h2{font-size:12px;color:var(--cp-text-muted);text-transform:uppercase;letter-spacing:.06em;margin:14px 6px 8px}
+.history-list{list-style:none;padding:0;margin:0;display:grid;gap:4px}.history-list button{width:100%;border:0;background:transparent;border-radius:10px;text-align:left;padding:9px 10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.main{min-width:0;min-height:0;display:grid;grid-template-rows:56px minmax(0,1fr) auto;overflow:hidden}.top{display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid var(--cp-border);background:var(--cp-panel-strong)}
+.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:650}.mark{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,var(--co-blue),var(--co-cyan) 32%,var(--co-purple) 66%,var(--co-pink));box-shadow:0 0 0 1px var(--cp-border),0 2px 8px var(--cp-accent-soft);position:relative;flex:none}.mark:after{content:"";position:absolute;inset:7px;border-radius:6px;background:var(--cp-surface);opacity:.9}
+.top-actions{display:flex;align-items:center;gap:10px;color:var(--cp-text-muted)}.avatar{width:32px;height:32px;border-radius:50%;background:var(--cp-surface-soft);border:1px solid var(--cp-border);color:var(--cp-text);display:grid;place-items:center;font-size:12px;font-weight:700}
+.thread{min-height:0;overflow-y:auto;padding:28px 24px 18px;scroll-behavior:smooth}.chat-column{max-width:920px;margin:0 auto}
+h1{margin:0 0 18px;font-size:clamp(28px,4vw,42px);line-height:1.1;font-weight:700;letter-spacing:-.03em}.gradient-text{background:linear-gradient(90deg,var(--co-blue),var(--co-purple),var(--co-pink));color:transparent;-webkit-background-clip:text;background-clip:text}
+.message{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;margin:18px 0;align-items:start}.message.user{grid-template-columns:minmax(0,1fr) 36px}.message.user .bubble{grid-column:1;justify-self:end;max-width:72%;background:var(--cp-accent-soft)}.message.user .avatar-mini{grid-column:2}
+.avatar-mini{width:36px;height:36px;border-radius:50%;border:1px solid var(--cp-border);background:var(--cp-surface);display:grid;place-items:center;font-weight:700;font-size:12px}.avatar-mini.copilot{border-radius:12px;background:linear-gradient(135deg,var(--co-blue),var(--co-cyan) 35%,var(--co-purple) 70%,var(--co-pink));color:var(--cp-accent-fg)}
+.bubble{background:var(--cp-surface);border:1px solid var(--cp-border);border-radius:16px;padding:16px;box-shadow:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14)}.bubble p{margin:0 0 10px}.bubble p:last-child{margin-bottom:0}
+.brief-title{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:10px}.brief-title h2{margin:0;font-size:21px;line-height:1.2}.time-pill{border:1px solid var(--cp-border);background:var(--cp-surface-soft);color:var(--cp-text-muted);border-radius:999px;padding:4px 9px;font-size:12px;white-space:nowrap}
+.guardrail{margin:12px 0;padding:10px 12px;border:1px solid var(--cp-border);border-left:4px solid var(--cp-accent);border-radius:10px;background:var(--cp-accent-soft);font-size:13px;color:var(--cp-text)}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(126px,1fr));gap:10px;margin:14px 0}.kpi{border:1px solid var(--cp-border);border-radius:14px;padding:12px;background:var(--cp-surface-soft);min-height:94px}.kpi .label{color:var(--cp-text-muted);font-size:12px;font-weight:650}.kpi .value{font-size:20px;font-weight:750;margin-top:7px;letter-spacing:-.02em}.kpi .sub{margin-top:4px;color:var(--cp-text-muted);font-size:12px}.bad{color:var(--bad-text)}.warn{color:var(--warn-text)}.good{color:var(--good-text)}
+.insight-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:14px}.chart-card{border:1px solid var(--cp-border);background:var(--cp-surface);border-radius:16px;padding:14px;min-width:0}.chart-card h3{margin:0 0 8px;font-size:15px}.caption{color:var(--cp-text-muted);font-size:12px;margin-top:8px}.svg-text{fill:var(--cp-text);font-family:'Segoe UI',system-ui,sans-serif}.svg-muted{fill:var(--cp-text-muted);font-family:'Segoe UI',system-ui,sans-serif}.svg-grid{stroke:var(--cp-border)}
+.daypart-grid{display:grid;gap:8px}.day-row{display:grid;grid-template-columns:86px 1fr 84px;align-items:center;gap:10px;font-size:13px}.bar-bg{height:18px;background:var(--cp-surface-soft);border:1px solid var(--cp-border);border-radius:999px;overflow:hidden}.bar-fill{display:block;height:100%;background:linear-gradient(90deg,var(--co-blue),var(--co-purple));border-radius:inherit}.critical .bar-fill{background:linear-gradient(90deg,var(--cp-warning),var(--cp-danger))}.day-row strong{font-weight:750}
+.reconcile{margin-top:10px;padding:10px;border-radius:10px;background:var(--cp-surface-soft);border:1px solid var(--cp-border);font-size:12.5px}.source-list{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}.source{font-size:12px;border:1px solid var(--cp-border);background:var(--cp-surface-soft);border-radius:999px;padding:5px 8px;color:var(--cp-text-muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 6px 48px}.chip{border:1px solid var(--cp-border);background:var(--cp-surface);border-radius:999px;padding:8px 12px;cursor:pointer;box-shadow:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14)}.chip[disabled]{opacity:.55;cursor:default}
+.typing{display:inline-flex;gap:4px;align-items:center;min-width:60px}.dot{width:7px;height:7px;border-radius:999px;background:var(--cp-text-muted);animation:pulse 1s infinite ease-in-out}.dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}@keyframes pulse{0%,80%,100%{opacity:.35;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+.composer-wrap{padding:10px 24px 12px;background:linear-gradient(180deg,transparent,var(--cp-bg-elevated) 18%)}.composer-inner{max-width:920px;margin:0 auto}.hint{display:none;margin:0 0 8px;color:var(--cp-text-muted);font-size:12px}.hint.visible{display:block}.composer{border:1px solid var(--cp-border-strong);background:var(--cp-surface);border-radius:18px;min-height:54px;display:grid;grid-template-columns:auto 1fr auto auto auto;align-items:center;gap:6px;padding:8px 10px;box-shadow:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14)}.icon-button{width:34px;height:34px;border:0;border-radius:10px;background:transparent;color:var(--cp-text-muted);cursor:pointer;display:grid;place-items:center}.composer input{border:0;outline:0;background:transparent;color:var(--cp-text);min-width:0}.composer input::placeholder{color:var(--cp-text-muted);opacity:1}.footer-note{margin-top:6px;text-align:center;color:var(--cp-text-muted);font-size:12px}
+.mini-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}.mini-table th,.mini-table td{text-align:left;padding:8px;border-bottom:1px solid var(--cp-border);vertical-align:top}.mini-table th{color:var(--cp-text-muted);font-size:12px}.plan-list{padding-left:20px;margin:8px 0 0}.plan-list li{margin:6px 0}
+@media (max-width:900px){.app{grid-template-columns:64px minmax(0,1fr)}.history{display:none}.sidebar{grid-template-columns:64px}.kpi-grid{grid-template-columns:repeat(2,1fr)}.insight-grid{grid-template-columns:1fr}}
+@media (max-width:640px){body{overflow:auto}.app{height:auto;min-height:calc(100vh - 40px)}.thread{padding:18px 12px}.composer-wrap{position:sticky;bottom:0;padding:8px 12px}.message.user .bubble{max-width:100%}.kpi-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<div class="disclosure" role="note" aria-label="Synthetic data disclosure"><span class="badge">Simulation</span><span>Illustrative simulation data only. Store, sales, labor, guest, and operations values are synthetic and are not Target operational data.</span></div>
+<div class="app">
+<aside class="sidebar" aria-label="Copilot navigation">
+<nav class="rail" aria-label="Primary">
+<button class="rail-btn active" aria-label="Chat active"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6.5A3.5 3.5 0 0 1 7.5 3h9A3.5 3.5 0 0 1 20 6.5v6A3.5 3.5 0 0 1 16.5 16H12l-4.5 4v-4A3.5 3.5 0 0 1 4 12.5z"/></svg></button>
+<button class="rail-btn" aria-label="Agents"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v4M7 8h10a3 3 0 0 1 3 3v5a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-5a3 3 0 0 1 3-3z"/><path d="M9 13h.01M15 13h.01M10 17h4"/></svg></button>
+<button class="rail-btn" aria-label="Notebooks"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 4h11a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M8 4v16M11 8h5M11 12h5"/></svg></button>
+<button class="rail-btn" aria-label="Search"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg></button>
+</nav>
+<section class="history" aria-label="Chat history"><button class="new-chat" aria-label="New chat">+ New chat</button><h2>Recent</h2><ul class="history-list"><li><button>Weekend recap</button></li><li><button>Payroll variance</button></li><li><button>Q3 remodel timeline</button></li><li><button>Drive-up observations</button></li><li><button>Leader huddle notes</button></li></ul></section>
+</aside>
+<main class="main">
+<header class="top"><div class="brand"><span class="mark" aria-hidden="true"></span><span>Copilot</span></div><div class="top-actions"><span>Work</span><span class="avatar" aria-label="User avatar initials SD">SD</span></div></header>
+<section class="thread" id="thread" aria-label="Conversation thread"><div class="chat-column" id="chatColumn">
+<h1>Good morning, <span class="gradient-text">Store Director</span></h1>
+<article class="message assistant"><div class="avatar-mini copilot" aria-hidden="true">✦</div><div class="bubble">
+<div class="brief-title"><h2>Your morning brief is ready</h2><span class="time-pill">Today • 7:30 AM</span></div>
+<p>Your store is steady overall, with one service issue that deserves your first walk. Financials are not the pressure point this morning: weekly sales are <strong>$2.535M</strong> against <strong>$2.600M</strong> plan, comp is <strong>+3.0%</strong>, and payroll is nearly balanced at <strong>-62 hours</strong> versus earned.</p>
+<p>Team and Operations need attention. Saturday’s service misses concentrated around pickup, and those operational signals sit next to the Guest pillar decline.</p>
+<div class="guardrail" role="note" aria-label="Accuracy note">This simulation treats the Guest and Operations relationship as a signal worth testing. It does not assert proven causation.</div>
+<div class="kpi-grid" role="img" aria-label="Power BI style KPI cards showing sales two point five three five million dollars versus two point six million plan, comp plus three percent, guest score seventy seven point one, pickup on-time ninety three percent, and payroll negative sixty two hours versus earned.">
+<div class="kpi"><div class="label">Wk Sales vs Plan</div><div class="value bad">-$65K</div><div class="sub">$2.535M / $2.600M • -2.5%</div></div>
+<div class="kpi"><div class="label">Comp %</div><div class="value good">+3.0%</div><div class="sub">vs last year</div></div>
+<div class="kpi"><div class="label">Guest Score</div><div class="value warn">77.1</div><div class="sub">Sat daily score 69</div></div>
+<div class="kpi"><div class="label">Pickup On-Time</div><div class="value warn">93.0%</div><div class="sub">Sat afternoon 82.1%</div></div>
+<div class="kpi"><div class="label">Payroll vs Earned</div><div class="value good">-62h</div><div class="sub">-0.4% vs earned</div></div>
+</div>
+<div class="insight-grid">
+<div class="chart-card" role="img" aria-label="Saturday daypart drill-down. Opening guest score seventy eight pickup on-time ninety five point two percent and two gap hours. Midday guest score seventy two pickup on-time ninety point five percent and six gap hours. Afternoon guest score sixty one pickup on-time eighty two point one percent and fourteen total gap hours. Close guest score sixty eight pickup on-time eighty six point nine percent and five gap hours.">
+<h3>Saturday drill-down by daypart</h3>
+<svg viewBox="0 0 640 250" aria-hidden="true"><line class="svg-grid" x1="56" y1="32" x2="56" y2="200"/><line class="svg-grid" x1="56" y1="200" x2="612" y2="200"/><text class="svg-muted" x="8" y="36" font-size="12">100</text><text class="svg-muted" x="14" y="113" font-size="12">75</text><text class="svg-muted" x="14" y="196" font-size="12">50</text><polyline points="96,91 244,111 392,147 540,124" fill="none" stroke="var(--co-purple)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="96,50 244,66 392,94 540,78" fill="none" stroke="var(--co-blue)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><g class="svg-text" font-size="12" font-weight="700"><text x="74" y="222">Opening</text><text x="226" y="222">Midday</text><text x="366" y="222">Afternoon</text><text x="526" y="222">Close</text><text x="80" y="86">78</text><text x="228" y="106">72</text><text x="376" y="142">61</text><text x="524" y="119">68</text><text x="76" y="45">95.2%</text><text x="222" y="61">90.5%</text><text x="370" y="89">82.1%</text><text x="518" y="73">86.9%</text></g><g><circle cx="96" cy="91" r="5" fill="var(--co-purple)"/><circle cx="244" cy="111" r="5" fill="var(--co-purple)"/><circle cx="392" cy="147" r="6" fill="var(--cp-danger)"/><circle cx="540" cy="124" r="5" fill="var(--co-purple)"/><circle cx="96" cy="50" r="5" fill="var(--co-blue)"/><circle cx="244" cy="66" r="5" fill="var(--co-blue)"/><circle cx="392" cy="94" r="6" fill="var(--cp-danger)"/><circle cx="540" cy="78" r="5" fill="var(--co-blue)"/></g><text class="svg-muted" x="70" y="18" font-size="12">Guest score</text><text class="svg-muted" x="168" y="18" font-size="12">Pickup on-time</text></svg>
+<p class="caption">Afternoon is the observation target: guest score 61, pickup on-time 82.1%, wait 8.4 minutes, and 14h total critical gap across departments.</p>
+</div>
+<div class="chart-card" role="img" aria-label="Coverage gap bars by Saturday daypart. Opening two hours, midday six hours, afternoon fourteen total hours, close five hours.">
+<h3>Critical coverage gap hours</h3><div class="daypart-grid" aria-hidden="true"><div class="day-row"><span>Opening</span><span class="bar-bg"><span class="bar-fill" style="width:14%"></span></span><strong>2h</strong></div><div class="day-row"><span>Midday</span><span class="bar-bg"><span class="bar-fill" style="width:43%"></span></span><strong>6h</strong></div><div class="day-row critical"><span>Afternoon</span><span class="bar-bg"><span class="bar-fill" style="width:100%"></span></span><strong>14h total</strong></div><div class="day-row"><span>Close</span><span class="bar-bg"><span class="bar-fill" style="width:36%"></span></span><strong>5h</strong></div></div>
+<div class="reconcile"><strong>Reconciliation:</strong> Saturday afternoon is <strong>14h total across departments</strong>: Fulfillment/Pickup <strong>9h</strong> + Front End <strong>3h</strong> + Grocery <strong>1.5h</strong> + Style <strong>0.5h</strong>.</div>
+</div></div>
+<p style="margin-top:14px">Do first: walk the pickup handoff before huddle. Watch pick-to-prep-to-guest delivery, check whether role handoffs are clear, and have the closing Team Leader own the recovery plan for afternoon role clarity.</p>
+<div class="source-list" aria-label="Sources cited in this Copilot response"><span class="source">[1] Power BI store metrics</span><span class="source">[2] UKG schedule</span><span class="source">[3] MyDayComms</span><span class="source">[4] Leader recap email</span><span class="source">[5] Guest comments</span></div>
+</div></article>
+<div class="chips" id="chips" aria-label="Suggested prompts"><button class="chip" data-prompt="priority">Why is pickup the priority?</button><button class="chip" data-prompt="saturday">Show me Saturday's drill-down</button><button class="chip" data-prompt="huddle">What should I say in the huddle?</button><button class="chip" data-prompt="defer">What can I defer today?</button><button class="chip" data-prompt="collide">Which initiatives collide this week?</button></div>
+</div></section>
+<div class="composer-wrap"><div class="composer-inner"><p class="hint" id="composerHint" aria-live="polite">This mockup uses the suggested prompts above so every response stays grounded in the synthetic dataset.</p><div class="composer" role="group" aria-label="Message Copilot composer"><button class="icon-button" aria-label="Attach content">＋</button><input id="composerInput" aria-label="Message Copilot" placeholder="Message Copilot" autocomplete="off"><button class="icon-button" aria-label="Voice input">♩</button><button class="icon-button" aria-label="Open suggested prompts" id="promptMenu">⌄</button><button class="icon-button" aria-label="Send unavailable in scripted mockup">➤</button></div><div class="footer-note">Copilot can make mistakes. This standalone mockup uses illustrative synthetic data only.</div></div></div>
+</main></div>
+<script>
+const STORE_DATA = {
+  "generatedAt": "2026-09-03T18:27:50-05:00",
+  "dataScope": "One fictional full-line big-box store, one retail week, all values synthetic for simulation.",
+  "storeProfile": {
+    "storeId": "SIM-TGT-9001",
+    "storeName": "Bullseye Bay Innovation Store",
+    "fictionalStoreDisclosure": "SIM-TGT-9001 is an obviously fictional identifier and is not a real Target store number.",
+    "format": "Full-line big-box with grocery, apparel, order pickup, drive-up, and same-day fulfillment",
+    "sellingSquareFeet": 128000,
+    "backroomSquareFeet": 38000,
+    "weeklySalesVolumeDollars": 2535000,
+    "teamHeadcountRostered": 214,
+    "typicalDailyScheduledHeadcountRange": "132-178",
+    "leadershipStructure": "1 Store Director, 5 Executive Team Leaders, 17 Team Leaders"
+  },
+  "retailWeek": {
+    "weekId": "FY26-W35-SIM",
+    "startDate": "2026-08-24",
+    "endDate": "2026-08-30",
+    "weekEnding": "2026-08-30"
+  },
+  "sourceSystemsRepresented": [
+    "Outlook / email",
+    "MyDayComms",
+    "Excel",
+    "UKG",
+    "Power BI",
+    "Copilot",
+    "Store fulfillment/pickup system",
+    "POS/guest feedback"
+  ],
+  "weeklySummary": {
+    "actualSales": 2535000,
+    "forecastSales": 2600000,
+    "salesVsForecastDollars": -65000,
+    "salesVsForecastPct": -2.5,
+    "lastYearSales": 2460000,
+    "compDollars": 75000,
+    "compPct": 3.0,
+    "priorWeekSales": 2525000,
+    "weekOverWeekDollars": 10000,
+    "weekOverWeekPct": 0.4,
+    "grossMarginDollars": 735370,
+    "grossMarginPct": 29.0,
+    "payrollEarnedHours": 15100,
+    "payrollScheduledHours": 15345,
+    "payrollActualHours": 15038,
+    "payrollVsEarnedHours": -62,
+    "payrollVsEarnedPct": -0.4,
+    "guestTransactions": 12030,
+    "guestScoreWeighted": 77.1,
+    "checkoutWaitWeightedMinutes": 4.3,
+    "guestRecoveryIncidents": 98,
+    "pickupOrders": 2649,
+    "fulfillmentPickupOnTimeWeightedPct": 93.0,
+    "inStockSalesWeightedPct": 96.1,
+    "onShelfAvailabilitySalesWeightedPct": 94.9,
+    "backroomTaskCompletionSalesWeightedPct": 86.3,
+    "scheduledHeadcount": 1025,
+    "actualHeadcount": 998,
+    "callOuts": 27,
+    "criticalCoverageGapHours": 74,
+    "onboardingTrainingCompletionWeightedPct": 90.3
+  },
+  "daily": [
+    {
+      "date": "2026-08-24",
+      "dayName": "Monday",
+      "dayIndex": 1,
+      "financials": {
+        "actualSales": 320000,
+        "forecastSales": 315000,
+        "lastYearSales": 308000,
+        "priorWeekSales": 312000,
+        "grossMarginPct": 29.8,
+        "markdownRatePct": 3.1,
+        "payrollEarnedHours": 1960,
+        "payrollScheduledHours": 1975,
+        "payrollActualHours": 1952,
+        "salesVsForecastDollars": 5000,
+        "salesVsForecastPct": 1.6,
+        "compPct": 3.9,
+        "weekOverWeekPct": 2.6,
+        "grossMarginDollars": 95360,
+        "payrollVsEarnedHours": -8,
+        "payrollVsEarnedPct": -0.4
+      },
+      "guest": {
+        "guestTransactions": 1560,
+        "guestScore": 82,
+        "checkoutWaitMinutes": 3.1,
+        "guestRecoveryIncidents": 7,
+        "pickupComplaints": 2
+      },
+      "operations": {
+        "inStockPct": 97.2,
+        "onShelfAvailabilityPct": 96.5,
+        "fulfillmentPickupOnTimePct": 96.8,
+        "pickupOrders": 312,
+        "backroomTaskCompletionPct": 94,
+        "myDayCommsCompletionPct": 96
+      },
+      "team": {
+        "scheduledHeadcount": 138,
+        "actualHeadcount": 137,
+        "callOuts": 1,
+        "coverageGapHoursByDaypart": {
+          "opening": 0,
+          "midday": 1,
+          "afternoon": 2,
+          "close": 0
+        },
+        "onboardingTrainingCompletionPct": 91
+      }
+    },
+    {
+      "date": "2026-08-25",
+      "dayName": "Tuesday",
+      "dayIndex": 2,
+      "financials": {
+        "actualSales": 305000,
+        "forecastSales": 310000,
+        "lastYearSales": 300000,
+        "priorWeekSales": 298000,
+        "grossMarginPct": 29.5,
+        "markdownRatePct": 3.4,
+        "payrollEarnedHours": 1875,
+        "payrollScheduledHours": 1890,
+        "payrollActualHours": 1882,
+        "salesVsForecastDollars": -5000,
+        "salesVsForecastPct": -1.6,
+        "compPct": 1.7,
+        "weekOverWeekPct": 2.3,
+        "grossMarginDollars": 89975,
+        "payrollVsEarnedHours": 7,
+        "payrollVsEarnedPct": 0.4
+      },
+      "guest": {
+        "guestTransactions": 1485,
+        "guestScore": 81,
+        "checkoutWaitMinutes": 3.3,
+        "guestRecoveryIncidents": 8,
+        "pickupComplaints": 3
+      },
+      "operations": {
+        "inStockPct": 96.9,
+        "onShelfAvailabilityPct": 96.1,
+        "fulfillmentPickupOnTimePct": 95.9,
+        "pickupOrders": 286,
+        "backroomTaskCompletionPct": 92,
+        "myDayCommsCompletionPct": 95
+      },
+      "team": {
+        "scheduledHeadcount": 132,
+        "actualHeadcount": 131,
+        "callOuts": 1,
+        "coverageGapHoursByDaypart": {
+          "opening": 0,
+          "midday": 2,
+          "afternoon": 1,
+          "close": 1
+        },
+        "onboardingTrainingCompletionPct": 91
+      }
+    },
+    {
+      "date": "2026-08-26",
+      "dayName": "Wednesday",
+      "dayIndex": 3,
+      "financials": {
+        "actualSales": 315000,
+        "forecastSales": 320000,
+        "lastYearSales": 306000,
+        "priorWeekSales": 308000,
+        "grossMarginPct": 29.9,
+        "markdownRatePct": 3.0,
+        "payrollEarnedHours": 1925,
+        "payrollScheduledHours": 1940,
+        "payrollActualHours": 1931,
+        "salesVsForecastDollars": -5000,
+        "salesVsForecastPct": -1.6,
+        "compPct": 2.9,
+        "weekOverWeekPct": 2.3,
+        "grossMarginDollars": 94185,
+        "payrollVsEarnedHours": 6,
+        "payrollVsEarnedPct": 0.3
+      },
+      "guest": {
+        "guestTransactions": 1510,
+        "guestScore": 83,
+        "checkoutWaitMinutes": 3.0,
+        "guestRecoveryIncidents": 6,
+        "pickupComplaints": 2
+      },
+      "operations": {
+        "inStockPct": 97.0,
+        "onShelfAvailabilityPct": 96.2,
+        "fulfillmentPickupOnTimePct": 96.3,
+        "pickupOrders": 301,
+        "backroomTaskCompletionPct": 93,
+        "myDayCommsCompletionPct": 96
+      },
+      "team": {
+        "scheduledHeadcount": 135,
+        "actualHeadcount": 133,
+        "callOuts": 2,
+        "coverageGapHoursByDaypart": {
+          "opening": 1,
+          "midday": 1,
+          "afternoon": 2,
+          "close": 1
+        },
+        "onboardingTrainingCompletionPct": 92
+      }
+    },
+    {
+      "date": "2026-08-27",
+      "dayName": "Thursday",
+      "dayIndex": 4,
+      "financials": {
+        "actualSales": 340000,
+        "forecastSales": 345000,
+        "lastYearSales": 329000,
+        "priorWeekSales": 332000,
+        "grossMarginPct": 29.6,
+        "markdownRatePct": 3.6,
+        "payrollEarnedHours": 2040,
+        "payrollScheduledHours": 2060,
+        "payrollActualHours": 2051,
+        "salesVsForecastDollars": -5000,
+        "salesVsForecastPct": -1.4,
+        "compPct": 3.3,
+        "weekOverWeekPct": 2.4,
+        "grossMarginDollars": 100640,
+        "payrollVsEarnedHours": 11,
+        "payrollVsEarnedPct": 0.5
+      },
+      "guest": {
+        "guestTransactions": 1625,
+        "guestScore": 80,
+        "checkoutWaitMinutes": 3.6,
+        "guestRecoveryIncidents": 10,
+        "pickupComplaints": 4
+      },
+      "operations": {
+        "inStockPct": 96.8,
+        "onShelfAvailabilityPct": 96.0,
+        "fulfillmentPickupOnTimePct": 95.1,
+        "pickupOrders": 335,
+        "backroomTaskCompletionPct": 91,
+        "myDayCommsCompletionPct": 94
+      },
+      "team": {
+        "scheduledHeadcount": 142,
+        "actualHeadcount": 141,
+        "callOuts": 1,
+        "coverageGapHoursByDaypart": {
+          "opening": 0,
+          "midday": 2,
+          "afternoon": 3,
+          "close": 2
+        },
+        "onboardingTrainingCompletionPct": 92
+      }
+    },
+    {
+      "date": "2026-08-28",
+      "dayName": "Friday",
+      "dayIndex": 5,
+      "financials": {
+        "actualSales": 385000,
+        "forecastSales": 400000,
+        "lastYearSales": 372000,
+        "priorWeekSales": 390000,
+        "grossMarginPct": 28.8,
+        "markdownRatePct": 4.8,
+        "payrollEarnedHours": 2270,
+        "payrollScheduledHours": 2335,
+        "payrollActualHours": 2251,
+        "salesVsForecastDollars": -15000,
+        "salesVsForecastPct": -3.8,
+        "compPct": 3.5,
+        "weekOverWeekPct": -1.3,
+        "grossMarginDollars": 110880,
+        "payrollVsEarnedHours": -19,
+        "payrollVsEarnedPct": -0.8
+      },
+      "guest": {
+        "guestTransactions": 1830,
+        "guestScore": 76,
+        "checkoutWaitMinutes": 4.7,
+        "guestRecoveryIncidents": 17,
+        "pickupComplaints": 8
+      },
+      "operations": {
+        "inStockPct": 95.9,
+        "onShelfAvailabilityPct": 94.8,
+        "fulfillmentPickupOnTimePct": 92.6,
+        "pickupOrders": 421,
+        "backroomTaskCompletionPct": 84,
+        "myDayCommsCompletionPct": 88
+      },
+      "team": {
+        "scheduledHeadcount": 155,
+        "actualHeadcount": 149,
+        "callOuts": 6,
+        "coverageGapHoursByDaypart": {
+          "opening": 1,
+          "midday": 4,
+          "afternoon": 7,
+          "close": 3
+        },
+        "onboardingTrainingCompletionPct": 90
+      }
+    },
+    {
+      "date": "2026-08-29",
+      "dayName": "Saturday",
+      "dayIndex": 6,
+      "financials": {
+        "actualSales": 550000,
+        "forecastSales": 575000,
+        "lastYearSales": 535000,
+        "priorWeekSales": 560000,
+        "grossMarginPct": 27.9,
+        "markdownRatePct": 6.2,
+        "payrollEarnedHours": 3040,
+        "payrollScheduledHours": 3125,
+        "payrollActualHours": 2982,
+        "salesVsForecastDollars": -25000,
+        "salesVsForecastPct": -4.3,
+        "compPct": 2.8,
+        "weekOverWeekPct": -1.8,
+        "grossMarginDollars": 153450,
+        "payrollVsEarnedHours": -58,
+        "payrollVsEarnedPct": -1.9
+      },
+      "guest": {
+        "guestTransactions": 2480,
+        "guestScore": 69,
+        "checkoutWaitMinutes": 6.2,
+        "guestRecoveryIncidents": 31,
+        "pickupComplaints": 18
+      },
+      "operations": {
+        "inStockPct": 94.6,
+        "onShelfAvailabilityPct": 92.7,
+        "fulfillmentPickupOnTimePct": 88.4,
+        "pickupOrders": 618,
+        "backroomTaskCompletionPct": 76,
+        "myDayCommsCompletionPct": 79
+      },
+      "team": {
+        "scheduledHeadcount": 178,
+        "actualHeadcount": 166,
+        "callOuts": 12,
+        "coverageGapHoursByDaypart": {
+          "opening": 2,
+          "midday": 6,
+          "afternoon": 14,
+          "close": 5
+        },
+        "onboardingTrainingCompletionPct": 88
+      }
+    },
+    {
+      "date": "2026-08-30",
+      "dayName": "Sunday",
+      "dayIndex": 7,
+      "financials": {
+        "actualSales": 320000,
+        "forecastSales": 335000,
+        "lastYearSales": 310000,
+        "priorWeekSales": 325000,
+        "grossMarginPct": 28.4,
+        "markdownRatePct": 5.1,
+        "payrollEarnedHours": 1990,
+        "payrollScheduledHours": 2020,
+        "payrollActualHours": 1989,
+        "salesVsForecastDollars": -15000,
+        "salesVsForecastPct": -4.5,
+        "compPct": 3.2,
+        "weekOverWeekPct": -1.5,
+        "grossMarginDollars": 90880,
+        "payrollVsEarnedHours": -1,
+        "payrollVsEarnedPct": -0.1
+      },
+      "guest": {
+        "guestTransactions": 1540,
+        "guestScore": 74,
+        "checkoutWaitMinutes": 5.1,
+        "guestRecoveryIncidents": 19,
+        "pickupComplaints": 10
+      },
+      "operations": {
+        "inStockPct": 95.4,
+        "onShelfAvailabilityPct": 93.8,
+        "fulfillmentPickupOnTimePct": 91.2,
+        "pickupOrders": 376,
+        "backroomTaskCompletionPct": 82,
+        "myDayCommsCompletionPct": 85
+      },
+      "team": {
+        "scheduledHeadcount": 145,
+        "actualHeadcount": 141,
+        "callOuts": 4,
+        "coverageGapHoursByDaypart": {
+          "opening": 1,
+          "midday": 3,
+          "afternoon": 6,
+          "close": 3
+        },
+        "onboardingTrainingCompletionPct": 89
+      }
+    }
+  ],
+  "narrativeHook": {
+    "hookMetric": "Saturday guest score dropped to 69 and pickup on-time dropped to 88.4% despite weekly sales comp remaining positive at +3.0%.",
+    "hypothesisSignals": [
+      "Saturday afternoon Fulfillment/Pickup lost 9 critical hours from four call-outs after partial backfill.",
+      "The store was already scheduled above earned hours for the week, but the lost hours landed in the wrong daypart, so the week-level payroll card hides the service-risk pattern.",
+      "Pickup on-time fell to 82.1% during 14:00-18:00, and 11 pickup-related guest recovery incidents were recorded in that department/daypart.",
+      "Front End backup calls overlapped the pickup rush while checkout wait reached 8.4 minutes and the guest-score dip was visible.",
+      "Backroom task completion closed Saturday at 76%; Sunday on-shelf availability was 93.8%."
+    ],
+    "dashboardShowsButDoesNotExplain": "A Power BI view can show the red Saturday Guest and Operations cells, but the observation hypothesis comes from connecting UKG call-outs, pickup queue timing, and MyDayComms/task completion.",
+    "drilldownLevel1SaturdayDaypart": [
+      {
+        "date": "2026-08-29",
+        "daypart": "Opening",
+        "timeRange": "06:00-10:00",
+        "guestScore": 78,
+        "guestFeedbackResponses": 42,
+        "checkoutWaitMinutes": 3.9,
+        "pickupOnTimePct": 95.2,
+        "pickupOrders": 86,
+        "guestRecoveryIncidents": 4,
+        "criticalCoverageGapHours": 2,
+        "primaryGap": "Front End meal-break stacking"
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Midday",
+        "timeRange": "10:00-14:00",
+        "guestScore": 72,
+        "guestFeedbackResponses": 61,
+        "checkoutWaitMinutes": 5.8,
+        "pickupOnTimePct": 90.5,
+        "pickupOrders": 157,
+        "guestRecoveryIncidents": 3,
+        "criticalCoverageGapHours": 6,
+        "primaryGap": "Fulfillment pick queue + Grocery pulls"
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Afternoon",
+        "timeRange": "14:00-18:00",
+        "guestScore": 61,
+        "guestFeedbackResponses": 76,
+        "checkoutWaitMinutes": 8.4,
+        "pickupOnTimePct": 82.1,
+        "pickupOrders": 241,
+        "guestRecoveryIncidents": 18,
+        "criticalCoverageGapHours": 14,
+        "primaryGap": "Fulfillment/Pickup call-outs not visible in sales plan"
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Close",
+        "timeRange": "18:00-22:00",
+        "guestScore": 68,
+        "guestFeedbackResponses": 51,
+        "checkoutWaitMinutes": 6.5,
+        "pickupOnTimePct": 86.9,
+        "pickupOrders": 134,
+        "guestRecoveryIncidents": 6,
+        "criticalCoverageGapHours": 5,
+        "primaryGap": "Recovery queue carried into close"
+      }
+    ],
+    "drilldownLevel2AfternoonDepartment": [
+      {
+        "date": "2026-08-29",
+        "daypart": "Afternoon",
+        "department": "Fulfillment / Pickup",
+        "scheduledHours": 52,
+        "actualHours": 43,
+        "gapHours": 9,
+        "callOuts": 4,
+        "pickupOnTimePct": 82.1,
+        "guestRecoveryIncidents": 11,
+        "missingItemComplaints": 7,
+        "observableSignal": "Pickup queue exceeded staffed pick capacity by 14:40.",
+        "pickupOrdersPickedByDepartment": 164,
+        "pickupOrdersRelationship": "Subset allocation: Fulfillment/Pickup picked or staged 164 of the 241 Saturday afternoon pickup orders; the remaining 77 were handoff/drive-up orders handled outside the Fulfillment pick queue.",
+        "missingItemComplaintsRelationship": "Subset measure: 7 missing-item complaints are included in Saturday daily pickupComplaints = 18; department rows do not represent a complaint-total breakdown."
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Afternoon",
+        "department": "Front End",
+        "scheduledHours": 64,
+        "actualHours": 61,
+        "gapHours": 3,
+        "callOuts": 2,
+        "checkoutWaitMinutes": 8.4,
+        "guestRecoveryIncidents": 5,
+        "observableSignal": "Backup cashier calls overlapped drive-up rush.",
+        "pickupOrdersHandledOutsideFulfillmentPickQueue": 77,
+        "pickupOrdersRelationship": "Subset allocation: these 77 handoff/drive-up orders complete the 241 Saturday afternoon pickup orders when added to Fulfillment/Pickup's 164 picked/staged orders."
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Afternoon",
+        "department": "Grocery",
+        "scheduledHours": 48,
+        "actualHours": 46.5,
+        "gapHours": 1.5,
+        "callOuts": 1,
+        "onShelfAvailabilityPct": 89.6,
+        "guestRecoveryIncidents": 2,
+        "observableSignal": "Cooler replenishment tasks deferred after 15:00.",
+        "pickupOrdersRelationship": "Not applicable; this department row explains staffing/task effects, not pickup-order volume allocation."
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Afternoon",
+        "department": "Style",
+        "scheduledHours": 36,
+        "actualHours": 35.5,
+        "gapHours": 0.5,
+        "callOuts": 1,
+        "taskCompletionPct": 78,
+        "guestRecoveryIncidents": 0,
+        "observableSignal": "Reshop queue grew, but it is not the primary signal in this observation hypothesis.",
+        "pickupOrdersRelationship": "Not applicable; this department row explains staffing/task effects, not pickup-order volume allocation."
+      }
+    ]
+  },
+  "semanticPalette": {
+    "background": "#FFFFFF",
+    "textPrimary": "#111827",
+    "textSecondary": "#374151",
+    "good": "#0F7B0F",
+    "warning": "#8A5A00",
+    "bad": "#B42318",
+    "target": "#2563EB",
+    "prior": "#6B7280",
+    "neutralFill": "#F3F4F6",
+    "gridline": "#E5E7EB",
+    "focusOutline": "#7C3AED"
+  },
+  "dataDisclosure": {
+    "exactWording": "Illustrative simulation data only. Store, sales, labor, guest, and operations values are synthetic and are not Target operational data.",
+    "recommendedPlacement": "Persistent footer below the dashboard title and repeated in the final details panel; use 12px text minimum, #374151 on white, with an info icon."
+  }
+};
+const RESPONSES={priority:{prompt:"Why is pickup the priority?",html:`<p>Pickup is first: the signals point to an observation target, not a proven single cause. The pattern is concentrated: Saturday guest score was <strong>69</strong>, the afternoon reached <strong>61</strong>, pickup on-time reached <strong>82.1%</strong>, and checkout wait reached <strong>8.4 minutes</strong>.</p><p>Fulfillment/Pickup had <strong>9 critical hours</strong> exposed in that window. That 9h is the department share inside the <strong>14h Saturday afternoon total</strong> across departments, not a competing total.</p><div class="reconcile"><strong>14h total =</strong> Fulfillment/Pickup 9h + Front End 3h + Grocery 1.5h + Style 0.5h.</div><div class="source-list"><span class="source">[1] Power BI store metrics</span><span class="source">[2] UKG schedule</span><span class="source">[4] Leader recap email</span></div>`},saturday:{prompt:"Show me Saturday's drill-down",html:`<p>Here is the Saturday view I would use before walking the floor. The afternoon row is the one to test in person.</p><div class="chart-card" role="img" aria-label="Table of Saturday daypart signals with Opening Midday Afternoon and Close values for guest score wait pickup on-time pickup orders incidents and gap hours."><h3>Saturday by daypart</h3><table class="mini-table"><thead><tr><th>Daypart</th><th>Guest</th><th>Wait</th><th>Pickup</th><th>Orders</th><th>Incidents</th><th>Gap</th></tr></thead><tbody><tr><td>Opening</td><td>78</td><td>3.9m</td><td>95.2%</td><td>86</td><td>4</td><td>2h</td></tr><tr><td>Midday</td><td>72</td><td>5.8m</td><td>90.5%</td><td>157</td><td>3</td><td>6h</td></tr><tr><td><strong>Afternoon</strong></td><td><strong>61</strong></td><td><strong>8.4m</strong></td><td><strong>82.1%</strong></td><td><strong>241</strong></td><td><strong>18</strong></td><td><strong>14h</strong></td></tr><tr><td>Close</td><td>68</td><td>6.5m</td><td>86.9%</td><td>134</td><td>6</td><td>5h</td></tr></tbody></table><p class="caption">The 14h all-department afternoon gap contains 9h in Fulfillment/Pickup, 3h Front End, 1.5h Grocery, and 0.5h Style.</p></div><div class="source-list"><span class="source">[1] Power BI store metrics</span><span class="source">[2] UKG schedule</span><span class="source">[5] Guest comments</span></div>`},huddle:{prompt:"What should I say in the huddle?",html:`<p>Keep it to one guest-facing priority, one owner, and one follow-up.</p><ol class="plan-list"><li><strong>Priority:</strong> pickup handoff clarity from pick to prep to guest delivery.</li><li><strong>Owner:</strong> Closing Team Leader owns afternoon role clarity and recovery follow-up by <strong>4:30 PM</strong>.</li><li><strong>Observation:</strong> you will watch the handoff before huddle and bring back what you see, not every red cell in the dashboard.</li></ol><p>Suggested wording: “Today we are testing the pickup handoff signal. Watch role clarity at the handoff point, call backup early, and close the loop before the afternoon rush.”</p><div class="source-list"><span class="source">[4] Leader recap email</span><span class="source">[3] MyDayComms</span></div>`},defer:{prompt:"What can I defer today?",html:`<p>Defer the noncritical seasonal signing audit to the closing routine unless guest-facing coverage stabilizes before <strong>3:30 PM</strong>.</p><p>Do not give away your first walk to a photo audit. Complete the Order Pickup handoff calibration by <strong>12:00 PM</strong>, and pair the Fresh backroom reset with the leader already checking cooler replenishment before close.</p><div class="source-list"><span class="source">[3] MyDayComms</span><span class="source">[4] Leader recap email</span></div>`},collide:{prompt:"Which initiatives collide this week?",html:`<p>The collision is not the deadlines alone; it is the deadline stack against today’s thin afternoon leadership coverage.</p><div class="chart-card" role="img" aria-label="Initiative collision table with three initiatives due September third and their local impact."><h3>Today's initiative collisions</h3><table class="mini-table"><thead><tr><th>Initiative</th><th>Due</th><th>Local impact</th></tr></thead><tbody><tr><td>Week 36 Order Pickup Handoff Calibration</td><td>Thu 09/03, 12:00 PM</td><td>Supports pickup observation priority</td></tr><tr><td>Fresh Backroom Ready by Noon Reset</td><td>Thu 09/03, close</td><td>Pair with cooler replenishment recovery</td></tr><tr><td>Seasonal Endcap Signing Audit</td><td>Thu 09/03, 5:00 PM</td><td>Collides with thin afternoon coverage</td></tr></tbody></table></div><p>This is a small version of the documented orchestration burden: roughly <strong>12 projects</strong>, <strong>50 dates</strong>, multiple owners, and no upstream deconfliction.</p><div class="source-list"><span class="source">[3] MyDayComms</span><span class="source">[4] Leader recap email</span></div>`}};
+const thread=document.getElementById('thread'),chatColumn=document.getElementById('chatColumn'),chips=document.getElementById('chips'),composerInput=document.getElementById('composerInput'),hint=document.getElementById('composerHint');
+function avatar(kind){return kind==='user'?'<div class="avatar-mini" aria-hidden="true">SD</div>':'<div class="avatar-mini copilot" aria-hidden="true">✦</div>'}
+function addUserMessage(text){const a=document.createElement('article');a.className='message user';a.innerHTML=`<div class="bubble"><p>${text}</p></div>${avatar('user')}`;chatColumn.insertBefore(a,chips)}
+function addAssistantMessage(html){const a=document.createElement('article');a.className='message assistant';a.innerHTML=`${avatar('assistant')}<div class="bubble">${html}</div>`;chatColumn.insertBefore(a,chips)}
+function addTyping(){const a=document.createElement('article');a.className='message assistant';a.id='typingRow';a.innerHTML=`${avatar('assistant')}<div class="bubble"><span class="typing" aria-label="Copilot is thinking"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>`;chatColumn.insertBefore(a,chips)}
+function scrollDown(){thread.scrollTo({top:thread.scrollHeight,behavior:'smooth'})}
+chips.addEventListener('click',event=>{const button=event.target.closest('button[data-prompt]');if(!button||button.disabled)return;const response=RESPONSES[button.dataset.prompt];addUserMessage(response.prompt);button.disabled=true;addTyping();scrollDown();const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;window.setTimeout(()=>{const typing=document.getElementById('typingRow');if(typing)typing.remove();addAssistantMessage(response.html);scrollDown()},reduce?40:450)});
+function showHint(text){hint.textContent=text;hint.classList.add('visible')}composerInput.addEventListener('focus',()=>showHint('Use one of the suggested prompts so this mockup stays grounded in the synthetic dataset.'));composerInput.addEventListener('input',()=>{composerInput.value='';showHint('Free text is intentionally disabled in this scripted mockup. Choose a suggested prompt instead.')});document.getElementById('promptMenu').addEventListener('click',()=>{chips.scrollIntoView({behavior:'smooth',block:'center'});showHint('Suggested prompts are below the morning brief.')});document.querySelectorAll('.rail-btn,.history-list button,.new-chat,.icon-button:not(#promptMenu)').forEach(b=>b.addEventListener('click',()=>showHint('This standalone mockup keeps focus on the Store Director morning brief and canned prompts.')));
+</script>
+</body>
+</html>
+
+
+

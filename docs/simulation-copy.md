@@ -177,6 +177,7 @@
 - **Scene description:** `Power BI-style visuals provide evidence. The narrative turns that evidence into a leadership plan.`
 - **Primary button:** `Generate my morning brief`
 - **Narrative panel label:** `Morning brief`
+- **Visible accuracy guardrail:** `This simulation treats the Guest and Operations relationship as a signal worth testing. It does not assert proven causation.`
 - **Visual card label:** `Guest`
 - **Visual card label:** `Team`
 - **Visual card label:** `Operations`
@@ -186,7 +187,7 @@
 
 #### Stage 1 — Store pulse
 - **Referenced visual card:** `Four-pillar store pulse`
-- **Copy:** `Your store is steady overall, with one service issue that deserves the first walk. Financials are not the pressure point this morning: weekly sales are $2.535M against $2.600M plan, comp is +3.0%, and payroll is nearly balanced at -62 hours versus earned. Team and Operations are where the day needs attention, because Saturday's service misses concentrated around pickup and then showed up in the Guest pillar.`
+- **Copy:** `Your store is steady overall, with one service issue that deserves the first walk. Financials are not the pressure point this morning: weekly sales are $2.535M against $2.600M plan, comp is +3.0%, and payroll is nearly balanced at -62 hours versus earned. Team and Operations are where the day needs attention: Saturday's service misses concentrated around pickup, and those operational signals sit next to the Guest pillar decline.`
 
 #### Stage 2 — What changed
 - **Referenced visual card:** `Guest and Operations trend`
@@ -194,7 +195,7 @@
 
 #### Stage 3 — What the dashboard does not explain by itself
 - **Referenced visual card:** `Team coverage and pickup drill-down`
-- **Copy:** `The weekly labor card can make this look like a total-hours issue, but the signal is more specific. The gap landed in the wrong place at the wrong time: Fulfillment/Pickup had {{FULFILLMENT_GAP_HRS}} critical hours exposed in the Saturday afternoon window, and the leader recap points to handoff pressure between pick, prep, and guest delivery. That is the first thing worth seeing in person today.`
+- **Copy:** `The weekly labor card can make this look like a total-hours issue, but the signal is more specific. The signal is concentrated in one place and time: Fulfillment/Pickup had {{FULFILLMENT_GAP_HRS}} critical hours exposed in the Saturday afternoon window, and the leader recap points to handoff pressure between pick, prep, and guest delivery. That makes pickup the first observation target to test in person today.`
 
 #### Stage 4 — Decision needed today
 - **Referenced visual card:** `Today's decision card`

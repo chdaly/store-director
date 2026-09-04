@@ -87,13 +87,13 @@ Coverage gap tuple is `opening / midday / afternoon / close` critical coverage g
 
 **What it does not explain by itself:** The weekly payroll card is only **-62 hours vs earned (-0.4%)**, which looks nearly balanced. The problem is not total weekly labor; it is labor landing in the wrong department and daypart.
 
-**Explicit causal chain for Narrative:**
+**Hypothesis signals for Narrative:**
 
 1. Saturday afternoon Fulfillment/Pickup lost **9 critical hours** from **four call-outs after partial backfill**.
-2. Pickup orders peaked in the same daypart, so pickup on-time fell to **82.1%** from 14:00-18:00.
-3. Fulfillment/Pickup generated **11** department/daypart recovery incidents; Front End wait rose to **8.4 minutes** because backup calls overlapped the pickup rush.
+2. Pickup orders peaked in the same daypart while pickup on-time fell to **82.1%** from 14:00-18:00.
+3. Fulfillment/Pickup had **11** department/daypart recovery incidents recorded; Front End wait reached **8.4 minutes** while backup calls overlapped the pickup rush.
 4. Guest score for the daypart fell to **61**, pulling Saturday's daily score down to **69**.
-5. Backroom task completion ended Saturday at **76%**, carrying into Sunday's lower on-shelf availability (**93.8%**).
+5. Backroom task completion ended Saturday at **76%**; Sunday's on-shelf availability was **93.8%**.
 
 ### Drill-down level 1 — Saturday by daypart
 
@@ -111,7 +111,7 @@ Coverage gap tuple is `opening / midday / afternoon / close` critical coverage g
 | Fulfillment / Pickup | 52 | 43 | 9 | 4 | Pickup on-time 82.1% | 11 | 164 picked/staged by Fulfillment out of 241 afternoon pickup orders | Pickup queue exceeded staffed pick capacity by 14:40. |
 | Front End | 64 | 61 | 3 | 2 | Checkout wait 8.4 min | 5 | 77 handoff/drive-up orders handled outside Fulfillment pick queue | Backup cashier calls overlapped drive-up rush. |
 | Grocery | 48 | 46.5 | 1.5 | 1 | OSA 89.6% | 2 | n/a | Cooler replenishment tasks deferred after 15:00. |
-| Style | 36 | 35.5 | 0.5 | 1 | Task completion 78% | 0 | n/a | Reshop queue grew, but did not drive the primary guest dip. |
+| Style | 36 | 35.5 | 0.5 | 1 | Task completion 78% | 0 | n/a | Reshop queue grew, but it is not the primary signal in this observation hypothesis. |
 
 Department-handled pickup orders are intentionally a subset allocation, not a second daypart total: Fulfillment/Pickup picked or staged **164** of the **241** Saturday afternoon pickup orders; the remaining **77** were handoff/drive-up orders handled outside the Fulfillment pick queue. `missingItemComplaints` in JSON is also a subset measure: Fulfillment's **7** missing-item complaints are part of Saturday's **18** total pickup complaints, not a parent total that department rows must sum to.
 
@@ -783,14 +783,14 @@ Inline this as a single JavaScript object value. It is strict JSON: no comments 
   ],
   "narrativeHook": {
     "hookMetric": "Saturday guest score dropped to 69 and pickup on-time dropped to 88.4% despite weekly sales comp remaining positive at +3.0%.",
-    "nonObviousCausalChain": [
+    "hypothesisSignals": [
       "Saturday afternoon Fulfillment/Pickup lost 9 critical hours from four call-outs after partial backfill.",
       "The store was already scheduled above earned hours for the week, but the lost hours landed in the wrong daypart, so the week-level payroll card hides the service-risk pattern.",
-      "Pickup on-time fell to 82.1% during 14:00-18:00, generating 11 pickup-related guest recovery incidents in that department/daypart.",
-      "Front End backup calls overlapped the pickup rush, lifting checkout wait to 8.4 minutes and compounding the guest-score dip.",
-      "Backroom task completion closed Saturday at 76%, leaving Sunday on-shelf availability depressed at 93.8%."
+      "Pickup on-time fell to 82.1% during 14:00-18:00, and 11 pickup-related guest recovery incidents were recorded in that department/daypart.",
+      "Front End backup calls overlapped the pickup rush while checkout wait reached 8.4 minutes and the guest-score dip was visible.",
+      "Backroom task completion closed Saturday at 76%; Sunday on-shelf availability was 93.8%."
     ],
-    "dashboardShowsButDoesNotExplain": "A Power BI view can show the red Saturday Guest and Operations cells, but the root cause requires connecting UKG call-outs, pickup queue timing, and MyDayComms/task completion.",
+    "dashboardShowsButDoesNotExplain": "A Power BI view can show the red Saturday Guest and Operations cells, but the observation hypothesis comes from connecting UKG call-outs, pickup queue timing, and MyDayComms/task completion.",
     "drilldownLevel1SaturdayDaypart": [
       {
         "date": "2026-08-29",
@@ -899,7 +899,7 @@ Inline this as a single JavaScript object value. It is strict JSON: no comments 
         "callOuts": 1,
         "taskCompletionPct": 78,
         "guestRecoveryIncidents": 0,
-        "observableSignal": "Reshop queue grew, but did not drive the primary guest dip.",
+        "observableSignal": "Reshop queue grew, but it is not the primary signal in this observation hypothesis.",
         "pickupOrdersRelationship": "Not applicable; this department row explains staffing/task effects, not pickup-order volume allocation."
       }
     ]
@@ -923,4 +923,3 @@ Inline this as a single JavaScript object value. It is strict JSON: no comments 
   }
 }
 ```
-

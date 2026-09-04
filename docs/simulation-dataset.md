@@ -130,6 +130,7 @@ Department-handled pickup orders are intentionally a subset allocation, not a se
 - Team call-outs reconcile to 27 total; critical coverage gap hours reconcile to 74 total.
 - Saturday daypart pickup orders reconcile to the Saturday daily total: 86 + 157 + 241 + 134 = 618.
 - Saturday afternoon department drill-down gap hours reconcile to Level 1: 9 + 3 + 1.5 + 0.5 = 14; scheduled vs actual hours also reconcile: 200 scheduled - 186 actual = 14.
+- Artifact chart labels explicitly distinguish all-department daypart gap-hour totals from department shares: the Scene 4 coverage matrix and Scene 5 daypart drill-down label Saturday afternoon as **14h total across departments**, with **9h** in Fulfillment/Pickup plus **3h** Front End, **1.5h** Grocery, and **0.5h** Style.
 - Saturday afternoon department drill-down recovery incidents reconcile to Level 1: 11 + 5 + 2 + 0 = 18.
 - Saturday afternoon pickup-order drill-down is labeled as a subset allocation, not a parent/child total: 164 Fulfillment-picked/staged orders + 77 Front End handoff/drive-up orders = 241 Level 1 afternoon pickup orders.
 - Fulfillment missing-item complaints are labeled as a subset measure: 7 missing-item complaints are included within Saturday's 18 pickup complaints, but no department-level complaint total is implied.

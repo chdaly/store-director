@@ -38,3 +38,7 @@
 - Learning: after wrapping responsive content, verify both axes; a horizontal clipping fix can accidentally push required executive-viewport content below the visible viewport.
 - Learning: focus-ring contrast must be checked per theme and per adjacent surface; the light-theme purple ring passed while the same ring failed dark active rail surfaces.
 - Learning: expander ARIA must be runtime-verified through actual toggles, not just static attributes in source.
+
+📌 Team update (2026-09-03T19:45:00-05:00): Reviewer lockout worked: Lead owned revisions after Frontend-authored Copilot UI was rejected, fixing persistent disclosure, KPI reflow, focus indicators, and prompt tray ARIA wiring.
+
+📌 Team update (2026-09-03T19:45:00-05:00): Verification must combine computation with rendered-output inspection; do not accept prose self-reports when UI perception, geometry, data arithmetic, RAI language, or screenshots are the actual risk.

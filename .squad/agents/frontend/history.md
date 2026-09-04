@@ -25,3 +25,7 @@
 - Tester rejected the first build factually for one Major dark-theme contrast defect and two Minor accessibility defects. Under reviewer protocol, Frontend was locked out from revising the authored artifact; Lead owned the repair.
 - Learning: run dark-theme contrast checks and complete ARIA interaction patterns before QA handoff, especially for persistent trust/disclosure text.
 - Propagated learning: data embedded in the artifact should be mechanically reconciled because cross-level arithmetic errors can survive prose review.
+
+📌 Team update (2026-09-03T19:45:00-05:00): Chrome and left-rail controls in the Copilot mockup must produce useful nearby/perceptible responses, not merely fire generic handlers; six Recent items now load full prior conversations.
+
+📌 Team update (2026-09-03T19:45:00-05:00): Verification must combine computation with rendered-output inspection; do not accept prose self-reports when UI perception, geometry, data arithmetic, RAI language, or screenshots are the actual risk.

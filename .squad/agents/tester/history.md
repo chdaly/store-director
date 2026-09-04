@@ -36,3 +36,7 @@
 - Re-reviewed Lead's non-author fixes to `store-director-copilot.html` and issued GO. All four prior findings resolved: mobile disclosure, 1024 KPI clipping, composer focus ring, and prompt-tray ARIA.
 - Re-ran full click-response audit: no dead controls. The only prior “mostly works” exception was the composer input, which now responds with near feedback, opens the tray, flips aria-expanded, and has a visible focus-within ring.
 - Learning: citation-looking chips should be explicitly classified in QA. Here they are non-interactive spans with no pointer cursor and no tab stop, so they are not dead controls.
+
+📌 Team update (2026-09-03T19:45:00-05:00): First Copilot UI QA found a mobile-only critical disclosure persistence defect plus KPI clipping, focus visibility, and prompt tray ARIA issues; re-review passed GO after measured fixes.
+
+📌 Team update (2026-09-03T19:45:00-05:00): Verification must combine computation with rendered-output inspection; do not accept prose self-reports when UI perception, geometry, data arithmetic, RAI language, or screenshots are the actual risk.

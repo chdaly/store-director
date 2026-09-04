@@ -25,3 +25,5 @@ Initial setup complete.
 
 - Persistent disclosure fixes should be verified both by geometry checks and by visual inspection. Geometry can produce false positives for scrolled content under a fixed banner; RAI-relevant checks are whether the disclosure remains visible/legible and whether top-of-page content starts below it.
 - A formerly advisory brand reference can become more salient when pinned globally, but under explicit user deferral it remains Advisory unless the content changes into a deceptive or harmful claim.
+
+📌 Team update (2026-09-03T19:45:00-05:00): Copilot UI RAI Red became Yellow after disclosure became fixed/persistent with strong contrast and app offset; no new Criticals/regressions, with advisory to neutralize retailer wording accepted.

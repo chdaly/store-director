@@ -32,3 +32,9 @@
 - Also neutralized embedded retailer-name disclosure strings while preserving the explicitly deferred fictional identifiers `SIM-TGT-9001` and “Bullseye Bay Innovation Store.”
 - Learning: fixed, always-visible disclosure copy needs brand-sensitivity review because screenshots preserve the pairing of simulated data with recognizable product chrome.
 - Verification learning: geometry checks are necessary but insufficient for longer banner strings; viewport screenshots must be visually inspected, especially at 390px mobile width.
+
+📌 Team update (2026-09-03T19:45:00-05:00): User accepted neutral retailer wording: user-visible disclosure now says "real retailer operational data" because the persistent fixed banner made brand specificity more prominent.
+
+📌 Team update (2026-09-03T19:45:00-05:00): The six prior conversations intentionally remain single-exchange texture; do not deepen them unless the user reverses that decision.
+
+📌 Team update (2026-09-03T19:45:00-05:00): Verification must combine computation with rendered-output inspection; do not accept prose self-reports when UI perception, geometry, data arithmetic, RAI language, or screenshots are the actual risk.

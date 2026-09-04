@@ -25,3 +25,7 @@
 - Reworked two numeric consistency defects: Saturday afternoon department gap hours and pickup-order drill-down reconciliation.
 - Learning: cross-level arithmetic in drill-down data failed twice and was caught only by independently parsing and summing JSON, not by reading prose. Future dataset handoffs need computed reconciliation checks.
 - Propagated learning: dark-theme contrast can affect trust labels and disclosures even when the data palette itself is accessible.
+
+📌 Team update (2026-09-03T19:45:00-05:00): The 13 invented-precision fact-check items remain deferred for the internal Innovation Hub audience; fabricated 95% pickup service goal remains accepted risk before client-facing use.
+
+📌 Team update (2026-09-03T19:45:00-05:00): Verification must combine computation with rendered-output inspection; do not accept prose self-reports when UI perception, geometry, data arithmetic, RAI language, or screenshots are the actual risk.

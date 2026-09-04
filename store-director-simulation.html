@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Store Director morning simulation</title>
+<script>
+  (() => {
+    const param = new URLSearchParams(window.location.search).get("scoutTheme");
+    const theme =
+      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<style>
+:root {
+  color-scheme: light;
+  --cp-bg: #f7f4ef;
+  --cp-bg-elevated: #fcfbf8;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #f5f5f5;
+  --cp-border: #dedede;
+  --cp-border-strong: #919191;
+  --cp-text: #242424;
+  --cp-text-muted: #5c5c5c;
+  --cp-text-soft: #6f6f6f;
+  --cp-accent: #b11f4b;
+  --cp-accent-hover: #9a1a41;
+  --cp-accent-soft: rgba(177, 31, 75, 0.08);
+  --cp-accent-fg: #ffffff;
+  --cp-success: #16a34a;
+  --cp-danger: #dc2626;
+  --cp-warning: #f59e0b;
+  --cp-link: #0078d4;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+  --cp-overlay: rgba(255, 255, 255, 0.8);
+  --cp-panel: rgba(255, 255, 255, 0.86);
+  --cp-panel-strong: rgba(255, 255, 255, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.55);
+  --cp-highlight: rgba(177, 31, 75, 0.12);
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #3d3b3a;
+  --cp-bg-elevated: #343231;
+  --cp-surface: #292929;
+  --cp-surface-soft: #2e2e2e;
+  --cp-border: #474747;
+  --cp-border-strong: #5f5f5f;
+  --cp-text: #dedede;
+  --cp-text-muted: #919191;
+  --cp-text-soft: #b0b0b0;
+  --cp-accent: #fd8ea1;
+  --cp-accent-hover: #fb7b91;
+  --cp-accent-soft: rgba(253, 142, 161, 0.14);
+  --cp-accent-fg: #1a1a1a;
+  --cp-success: #4ade80;
+  --cp-danger: #f87171;
+  --cp-warning: #fbbf24;
+  --cp-link: #4da6ff;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  --cp-overlay: rgba(41, 41, 41, 0.88);
+  --cp-panel: rgba(41, 41, 41, 0.72);
+  --cp-panel-strong: rgba(41, 41, 41, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.04);
+  --cp-highlight: rgba(253, 142, 161, 0.12);
+}
+html[data-theme="dark"] {
+  --background: #292929;
+  --textPrimary: #F3F4F6;
+  --textSecondary: #D1D5DB;
+  --good: #4ADE80;
+  --warning: #FBBF24;
+  --bad: #F87171;
+  --target: #93C5FD;
+  --prior: #CBD5E1;
+  --neutralFill: #343231;
+  --gridline: #8A8A8A;
+  --focusOutline: #C084FC;
+  --shadow-card: 0 0 2px rgba(0,0,0,.4),0 1px 2px rgba(0,0,0,.45);
+}
+:root{--background:#FFFFFF;--textPrimary:#111827;--textSecondary:#374151;--good:#0F7B0F;--warning:#8A5A00;--bad:#B42318;--target:#2563EB;--prior:#6B7280;--neutralFill:#F3F4F6;--gridline:#E5E7EB;--focusOutline:#7C3AED;--shadow-card:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14)}
+*{box-sizing:border-box}.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}body{margin:0;background:linear-gradient(135deg,var(--cp-bg),var(--cp-bg-elevated));color:var(--textPrimary);font-family:"Segoe UI",Aptos,Calibri,-apple-system,BlinkMacSystemFont,sans-serif}button{font:inherit;cursor:pointer}button:focus-visible,[role=tab]:focus-visible{outline:3px solid var(--focusOutline);outline-offset:3px}.shell{max-width:1220px;margin:auto;padding:24px}.topbar{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}.eyebrow,.mini{color:var(--textSecondary);font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:12px}.disclosure{display:flex;gap:8px;color:var(--textSecondary);font-size:13px;line-height:1.35}.disclosure:before{content:"ⓘ";color:var(--target);font-weight:900}.progress-wrap{min-width:280px}.progress-label{display:flex;justify-content:space-between;color:var(--textSecondary);font-size:12px;margin-bottom:6px}.progress{height:8px;border:1px solid var(--gridline);border-radius:99px;background:var(--neutralFill);overflow:hidden}.progress span{display:block;height:100%;background:var(--target);transition:width .2s ease}.scene{background:var(--background);border:1px solid var(--gridline);box-shadow:var(--shadow-card);border-radius:16px;padding:clamp(20px,3vw,36px);min-height:660px}.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.9fr);gap:24px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}h1{font-size:clamp(38px,6vw,72px);line-height:.95;letter-spacing:-.04em;margin:14px 0 16px}h2{font-size:clamp(28px,4vw,46px);line-height:1.02;letter-spacing:-.03em;margin:0 0 10px}h3{margin:0 0 8px;font-size:20px}p{color:var(--textSecondary);line-height:1.55}.lede{font-size:clamp(18px,2vw,23px);max-width:920px}.card{background:var(--background);border:1px solid var(--gridline);border-radius:16px;padding:18px;box-shadow:var(--shadow-card)}.soft{background:var(--neutralFill)}.actionbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:26px}.primary,.secondary,.ghost{border-radius:.625rem;border:1px solid var(--cp-border-strong);padding:11px 16px;font-weight:800}.primary{background:var(--cp-accent);color:var(--cp-accent-fg);border-color:var(--cp-accent)}.primary:hover{background:var(--cp-accent-hover)}.secondary{background:var(--background);color:var(--textPrimary)}.ghost{background:transparent;color:var(--textSecondary);border-color:var(--gridline)}.timeline{display:grid;gap:12px;margin:28px 0}.timeitem{display:grid;grid-template-columns:18px 1fr;gap:12px;padding:14px;border:1px solid var(--gridline);border-radius:14px;background:var(--neutralFill)}.dot{width:14px;height:14px;margin-top:3px;border-radius:50%;background:var(--target);border:3px solid var(--background);box-shadow:0 0 0 2px var(--target)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}[role=tab]{border:1px solid var(--gridline);border-radius:99px;padding:9px 14px;background:var(--background);color:var(--textSecondary);font-weight:800}[role=tab][aria-selected=true]{border-color:var(--target);color:var(--textPrimary);background:var(--neutralFill)}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--gridline);vertical-align:top}th{color:var(--textSecondary);font-size:12px;text-transform:uppercase;letter-spacing:.04em}.stack{display:grid;gap:12px}.email-line{border-left:4px solid var(--target);padding-left:14px;margin:14px 0}.pill{display:inline-flex;align-items:center;border:1px solid var(--gridline);border-radius:99px;padding:6px 10px;background:var(--neutralFill);color:var(--textSecondary);font-size:12px;font-weight:800}.bad{color:var(--bad)}.warn{color:var(--warning)}.good{color:var(--good)}.ledger{display:grid;gap:10px}.row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:12px;border:1px solid var(--gridline);border-radius:14px;background:var(--background)}.check{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:var(--good);border:2px solid var(--good);font-weight:900}.unchecked{border-color:var(--bad);color:var(--bad)}.reveal,.drill,.signals,.localized,.compare{display:none}.on{display:block}.reveal{border-left:5px solid var(--bad)}.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.kpi,.chart,.decision{border:2px solid var(--gridline);border-radius:16px;padding:14px;background:var(--background);transition:.2s;box-shadow:var(--shadow-card)}.kpi.highlight,.chart.highlight,.decision.highlight{border-color:var(--target);box-shadow:0 0 0 4px rgba(37,99,235,.12),var(--shadow-card);transform:translateY(-2px)}.kpi .label{color:var(--textSecondary);font-weight:900}.kpi .value{font-size:30px;font-weight:900;margin:8px 0 4px}.brief-stage{display:none;padding:14px;border-radius:14px;border:1px solid var(--gridline);background:var(--neutralFill);margin:0 0 12px}.brief-stage.show{display:block;animation:rise .25s ease}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}svg{width:100%;height:auto;display:block}.source-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.signal-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.signal{border:1px solid var(--gridline);border-radius:14px;padding:12px;background:var(--neutralFill)}.signal strong{display:block;margin-bottom:6px}.toggle{display:inline-flex;border:1px solid var(--gridline);border-radius:99px;padding:4px;gap:4px;background:var(--neutralFill)}.toggle button{border:0;border-radius:99px;padding:8px 12px;background:transparent;color:var(--textSecondary);font-weight:800}.toggle button[aria-pressed=true]{background:var(--background);color:var(--textPrimary);box-shadow:var(--shadow-card)}.footer{margin-top:18px;padding:16px;border-top:1px solid var(--gridline);color:var(--textSecondary);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}@media(max-width:920px){.topbar{flex-direction:column}.progress-wrap{width:100%;min-width:0}.grid2,.grid3{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.signal-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.shell{padding:12px}.kpis,.signal-grid{grid-template-columns:1fr}table{font-size:13px}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body><div class="shell"><header class="topbar" role="banner"><h1 class="sr-only">Store Director morning simulation</h1><div><div class="eyebrow">Store Director morning simulation</div><div class="disclosure" aria-label="Synthetic data disclosure">Illustrative simulation data only. Store, sales, labor, guest, and operations values are synthetic and are not Target operational data.</div></div><div class="progress-wrap" aria-label="Simulation progress"><div class="progress-label"><span id="ptext"></span><span id="pname"></span></div><div class="progress"><span id="pfill"></span></div></div></header><main id="app" role="main"></main><footer class="footer" role="contentinfo"><span aria-label="Footer disclosure">Illustrative simulation. No real Target data. No Microsoft or Target logos or trade dress.</span><span>Synthetic illustrative data</span></footer></div>
+<script>
+const STORE_DATA = {
+  "generatedAt": "2026-09-03T18:27:50-05:00",
+  "dataScope": "One fictional full-line big-box store, one retail week, all values synthetic for simulation.",
+  "storeProfile": {
+    "storeId": "SIM-TGT-9001",
+    "storeName": "Bullseye Bay Innovation Store",
+    "fictionalStoreDisclosure": "SIM-TGT-9001 is an obviously fictional identifier and is not a real Target store number.",
+    "format": "Full-line big-box with grocery, apparel, order pickup, drive-up, and same-day fulfillment",
+    "sellingSquareFeet": 128000,
+    "backroomSquareFeet": 38000,
+    "weeklySalesVolumeDollars": 2535000,
+    "teamHeadcountRostered": 214,
+    "typicalDailyScheduledHeadcountRange": "132-178",
+    "leadershipStructure": "1 Store Director, 5 Executive Team Leaders, 17 Team Leaders"
+  },
+  "retailWeek": {
+    "weekId": "FY26-W35-SIM",
+    "startDate": "2026-08-24",
+    "endDate": "2026-08-30",
+    "weekEnding": "2026-08-30"
+  },
+  "sourceSystemsRepresented": [
+    "Outlook / email",
+    "MyDayComms",
+    "Excel",
+    "UKG",
+    "Power BI",
+    "Copilot",
+    "Store fulfillment/pickup system",
+    "POS/guest feedback"
+  ],
+  "weeklySummary": {
+    "actualSales": 2535000,
+    "forecastSales": 2600000,
+    "salesVsForecastDollars": -65000,
+    "salesVsForecastPct": -2.5,
+    "lastYearSales": 2460000,
+    "compDollars": 75000,
+    "compPct": 3.0,
+    "priorWeekSales": 2525000,
+    "weekOverWeekDollars": 10000,
+    "weekOverWeekPct": 0.4,
+    "grossMarginDollars": 735370,
+    "grossMarginPct": 29.0,
+    "payrollEarnedHours": 15100,
+    "payrollScheduledHours": 15345,
+    "payrollActualHours": 15038,
+    "payrollVsEarnedHours": -62,
+    "payrollVsEarnedPct": -0.4,
+    "guestTransactions": 12030,
+    "guestScoreWeighted": 77.1,
+    "checkoutWaitWeightedMinutes": 4.3,
+    "guestRecoveryIncidents": 98,
+    "pickupOrders": 2649,
+    "fulfillmentPickupOnTimeWeightedPct": 93.0,
+    "inStockSalesWeightedPct": 96.1,
+    "onShelfAvailabilitySalesWeightedPct": 94.9,
+    "backroomTaskCompletionSalesWeightedPct": 86.3,
+    "scheduledHeadcount": 1025,
+    "actualHeadcount": 998,
+    "callOuts": 27,
+    "criticalCoverageGapHours": 74,
+    "onboardingTrainingCompletionWeightedPct": 90.3
+  },
+  "daily": [
+    {
+      "date": "2026-08-24",
+      "dayName": "Monday",
+      "dayIndex": 1,
+      "financials": {
+        "actualSales": 320000,
+        "forecastSales": 315000,
+        "lastYearSales": 308000,
+        "priorWeekSales": 312000,
+        "grossMarginPct": 29.8,
+        "markdownRatePct": 3.1,
+        "payrollEarnedHours": 1960,
+        "payrollScheduledHours": 1975,
+        "payrollActualHours": 1952,
+        "salesVsForecastDollars": 5000,
+        "salesVsForecastPct": 1.6,
+        "compPct": 3.9,
+        "weekOverWeekPct": 2.6,
+        "grossMarginDollars": 95360,
+        "payrollVsEarnedHours": -8,
+        "payrollVsEarnedPct": -0.4
+      },
+      "guest": {
+        "guestTransactions": 1560,
+        "guestScore": 82,
+        "checkoutWaitMinutes": 3.1,
+        "guestRecoveryIncidents": 7,
+        "pickupComplaints": 2
+      },
+      "operations": {
+        "inStockPct": 97.2,
+        "onShelfAvailabilityPct": 96.5,
+        "fulfillmentPickupOnTimePct": 96.8,
+        "pickupOrders": 312,
+        "backroomTaskCompletionPct": 94,
+        "myDayCommsCompletionPct": 96
+      },
+      "team": {
+        "scheduledHeadcount": 138,
+        "actualHeadcount": 137,
+        "callOuts": 1,
+        "coverageGapHoursByDaypart": {
+          "opening": 0,
+          "midday": 1,
+          "afternoon": 2,
+          "close": 0
+        },
+        "onboardingTrainingCompletionPct": 91
+      }
+    },
+    {
+      "date": "2026-08-25",
+      "dayName": "Tuesday",
+      "dayIndex": 2,
+      "financials": {
+        "actualSales": 305000,
+        "forecastSales": 310000,
+        "lastYearSales": 300000,
+        "priorWeekSales": 298000,
+        "grossMarginPct": 29.5,
+        "markdownRatePct": 3.4,
+        "payrollEarnedHours": 1875,
+        "payrollScheduledHours": 1890,
+        "payrollActualHours": 1882,
+        "salesVsForecastDollars": -5000,
+        "salesVsForecastPct": -1.6,
+        "compPct": 1.7,
+        "weekOverWeekPct": 2.3,
+        "grossMarginDollars": 89975,
+        "payrollVsEarnedHours": 7,
+        "payrollVsEarnedPct": 0.4
+      },
+      "guest": {
+        "guestTransactions": 1485,
+        "guestScore": 81,
+        "checkoutWaitMinutes": 3.3,
+        "guestRecoveryIncidents": 8,
+        "pickupComplaints": 3
+      },
+      "operations": {
+        "inStockPct": 96.9,
+        "onShelfAvailabilityPct": 96.1,
+        "fulfillmentPickupOnTimePct": 95.9,
+        "pickupOrders": 286,
+        "backroomTaskCompletionPct": 92,
+        "myDayCommsCompletionPct": 95
+      },
+      "team": {
+        "scheduledHeadcount": 132,
+        "actualHeadcount": 131,
+        "callOuts": 1,
+        "coverageGapHoursByDaypart": {
+          "opening": 0,
+          "midday": 2,
+          "afternoon": 1,
+          "close": 1
+        },
+        "onboardingTrainingCompletionPct": 91
+      }
+    },
+    {
+      "date": "2026-08-26",
+      "dayName": "Wednesday",
+      "dayIndex": 3,
+      "financials": {
+        "actualSales": 315000,
+        "forecastSales": 320000,
+        "lastYearSales": 306000,
+        "priorWeekSales": 308000,
+        "grossMarginPct": 29.9,
+        "markdownRatePct": 3.0,
+        "payrollEarnedHours": 1925,
+        "payrollScheduledHours": 1940,
+        "payrollActualHours": 1931,
+        "salesVsForecastDollars": -5000,
+        "salesVsForecastPct": -1.6,
+        "compPct": 2.9,
+        "weekOverWeekPct": 2.3,
+        "grossMarginDollars": 94185,
+        "payrollVsEarnedHours": 6,
+        "payrollVsEarnedPct": 0.3
+      },
+      "guest": {
+        "guestTransactions": 1510,
+        "guestScore": 83,
+        "checkoutWaitMinutes": 3.0,
+        "guestRecoveryIncidents": 6,
+        "pickupComplaints": 2
+      },
+      "operations": {
+        "inStockPct": 97.0,
+        "onShelfAvailabilityPct": 96.2,
+        "fulfillmentPickupOnTimePct": 96.3,
+        "pickupOrders": 301,
+        "backroomTaskCompletionPct": 93,
+        "myDayCommsCompletionPct": 96
+      },
+      "team": {
+        "scheduledHeadcount": 135,
+        "actualHeadcount": 133,
+        "callOuts": 2,
+        "coverageGapHoursByDaypart": {
+          "opening": 1,
+          "midday": 1,
+          "afternoon": 2,
+          "close": 1
+        },
+        "onboardingTrainingCompletionPct": 92
+      }
+    },
+    {
+      "date": "2026-08-27",
+      "dayName": "Thursday",
+      "dayIndex": 4,
+      "financials": {
+        "actualSales": 340000,
+        "forecastSales": 345000,
+        "lastYearSales": 329000,
+        "priorWeekSales": 332000,
+        "grossMarginPct": 29.6,
+        "markdownRatePct": 3.6,
+        "payrollEarnedHours": 2040,
+        "payrollScheduledHours": 2060,
+        "payrollActualHours": 2051,
+        "salesVsForecastDollars": -5000,
+        "salesVsForecastPct": -1.4,
+        "compPct": 3.3,
+        "weekOverWeekPct": 2.4,
+        "grossMarginDollars": 100640,
+        "payrollVsEarnedHours": 11,
+        "payrollVsEarnedPct": 0.5
+      },
+      "guest": {
+        "guestTransactions": 1625,
+        "guestScore": 80,
+        "checkoutWaitMinutes": 3.6,
+        "guestRecoveryIncidents": 10,
+        "pickupComplaints": 4
+      },
+      "operations": {
+        "inStockPct": 96.8,
+        "onShelfAvailabilityPct": 96.0,
+        "fulfillmentPickupOnTimePct": 95.1,
+        "pickupOrders": 335,
+        "backroomTaskCompletionPct": 91,
+        "myDayCommsCompletionPct": 94
+      },
+      "team": {
+        "scheduledHeadcount": 142,
+        "actualHeadcount": 141,
+        "callOuts": 1,
+        "coverageGapHoursByDaypart": {
+          "opening": 0,
+          "midday": 2,
+          "afternoon": 3,
+          "close": 2
+        },
+        "onboardingTrainingCompletionPct": 92
+      }
+    },
+    {
+      "date": "2026-08-28",
+      "dayName": "Friday",
+      "dayIndex": 5,
+      "financials": {
+        "actualSales": 385000,
+        "forecastSales": 400000,
+        "lastYearSales": 372000,
+        "priorWeekSales": 390000,
+        "grossMarginPct": 28.8,
+        "markdownRatePct": 4.8,
+        "payrollEarnedHours": 2270,
+        "payrollScheduledHours": 2335,
+        "payrollActualHours": 2251,
+        "salesVsForecastDollars": -15000,
+        "salesVsForecastPct": -3.8,
+        "compPct": 3.5,
+        "weekOverWeekPct": -1.3,
+        "grossMarginDollars": 110880,
+        "payrollVsEarnedHours": -19,
+        "payrollVsEarnedPct": -0.8
+      },
+      "guest": {
+        "guestTransactions": 1830,
+        "guestScore": 76,
+        "checkoutWaitMinutes": 4.7,
+        "guestRecoveryIncidents": 17,
+        "pickupComplaints": 8
+      },
+      "operations": {
+        "inStockPct": 95.9,
+        "onShelfAvailabilityPct": 94.8,
+        "fulfillmentPickupOnTimePct": 92.6,
+        "pickupOrders": 421,
+        "backroomTaskCompletionPct": 84,
+        "myDayCommsCompletionPct": 88
+      },
+      "team": {
+        "scheduledHeadcount": 155,
+        "actualHeadcount": 149,
+        "callOuts": 6,
+        "coverageGapHoursByDaypart": {
+          "opening": 1,
+          "midday": 4,
+          "afternoon": 7,
+          "close": 3
+        },
+        "onboardingTrainingCompletionPct": 90
+      }
+    },
+    {
+      "date": "2026-08-29",
+      "dayName": "Saturday",
+      "dayIndex": 6,
+      "financials": {
+        "actualSales": 550000,
+        "forecastSales": 575000,
+        "lastYearSales": 535000,
+        "priorWeekSales": 560000,
+        "grossMarginPct": 27.9,
+        "markdownRatePct": 6.2,
+        "payrollEarnedHours": 3040,
+        "payrollScheduledHours": 3125,
+        "payrollActualHours": 2982,
+        "salesVsForecastDollars": -25000,
+        "salesVsForecastPct": -4.3,
+        "compPct": 2.8,
+        "weekOverWeekPct": -1.8,
+        "grossMarginDollars": 153450,
+        "payrollVsEarnedHours": -58,
+        "payrollVsEarnedPct": -1.9
+      },
+      "guest": {
+        "guestTransactions": 2480,
+        "guestScore": 69,
+        "checkoutWaitMinutes": 6.2,
+        "guestRecoveryIncidents": 31,
+        "pickupComplaints": 18
+      },
+      "operations": {
+        "inStockPct": 94.6,
+        "onShelfAvailabilityPct": 92.7,
+        "fulfillmentPickupOnTimePct": 88.4,
+        "pickupOrders": 618,
+        "backroomTaskCompletionPct": 76,
+        "myDayCommsCompletionPct": 79
+      },
+      "team": {
+        "scheduledHeadcount": 178,
+        "actualHeadcount": 166,
+        "callOuts": 12,
+        "coverageGapHoursByDaypart": {
+          "opening": 2,
+          "midday": 6,
+          "afternoon": 14,
+          "close": 5
+        },
+        "onboardingTrainingCompletionPct": 88
+      }
+    },
+    {
+      "date": "2026-08-30",
+      "dayName": "Sunday",
+      "dayIndex": 7,
+      "financials": {
+        "actualSales": 320000,
+        "forecastSales": 335000,
+        "lastYearSales": 310000,
+        "priorWeekSales": 325000,
+        "grossMarginPct": 28.4,
+        "markdownRatePct": 5.1,
+        "payrollEarnedHours": 1990,
+        "payrollScheduledHours": 2020,
+        "payrollActualHours": 1989,
+        "salesVsForecastDollars": -15000,
+        "salesVsForecastPct": -4.5,
+        "compPct": 3.2,
+        "weekOverWeekPct": -1.5,
+        "grossMarginDollars": 90880,
+        "payrollVsEarnedHours": -1,
+        "payrollVsEarnedPct": -0.1
+      },
+      "guest": {
+        "guestTransactions": 1540,
+        "guestScore": 74,
+        "checkoutWaitMinutes": 5.1,
+        "guestRecoveryIncidents": 19,
+        "pickupComplaints": 10
+      },
+      "operations": {
+        "inStockPct": 95.4,
+        "onShelfAvailabilityPct": 93.8,
+        "fulfillmentPickupOnTimePct": 91.2,
+        "pickupOrders": 376,
+        "backroomTaskCompletionPct": 82,
+        "myDayCommsCompletionPct": 85
+      },
+      "team": {
+        "scheduledHeadcount": 145,
+        "actualHeadcount": 141,
+        "callOuts": 4,
+        "coverageGapHoursByDaypart": {
+          "opening": 1,
+          "midday": 3,
+          "afternoon": 6,
+          "close": 3
+        },
+        "onboardingTrainingCompletionPct": 89
+      }
+    }
+  ],
+  "narrativeHook": {
+    "hookMetric": "Saturday guest score dropped to 69 and pickup on-time dropped to 88.4% despite weekly sales comp remaining positive at +3.0%.",
+    "nonObviousCausalChain": [
+      "Saturday afternoon Fulfillment/Pickup lost 9 critical hours from four call-outs after partial backfill.",
+      "The store was already scheduled above earned hours for the week, but the lost hours landed in the wrong daypart, so the week-level payroll card hides the service-risk pattern.",
+      "Pickup on-time fell to 82.1% during 14:00-18:00, generating 11 pickup-related guest recovery incidents in that department/daypart.",
+      "Front End backup calls overlapped the pickup rush, lifting checkout wait to 8.4 minutes and compounding the guest-score dip.",
+      "Backroom task completion closed Saturday at 76%, leaving Sunday on-shelf availability depressed at 93.8%."
+    ],
+    "dashboardShowsButDoesNotExplain": "A Power BI view can show the red Saturday Guest and Operations cells, but the root cause requires connecting UKG call-outs, pickup queue timing, and MyDayComms/task completion.",
+    "drilldownLevel1SaturdayDaypart": [
+      {
+        "date": "2026-08-29",
+        "daypart": "Opening",
+        "timeRange": "06:00-10:00",
+        "guestScore": 78,
+        "guestFeedbackResponses": 42,
+        "checkoutWaitMinutes": 3.9,
+        "pickupOnTimePct": 95.2,
+        "pickupOrders": 86,
+        "guestRecoveryIncidents": 4,
+        "criticalCoverageGapHours": 2,
+        "primaryGap": "Front End meal-break stacking"
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Midday",
+        "timeRange": "10:00-14:00",
+        "guestScore": 72,
+        "guestFeedbackResponses": 61,
+        "checkoutWaitMinutes": 5.8,
+        "pickupOnTimePct": 90.5,
+        "pickupOrders": 157,
+        "guestRecoveryIncidents": 3,
+        "criticalCoverageGapHours": 6,
+        "primaryGap": "Fulfillment pick queue + Grocery pulls"
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Afternoon",
+        "timeRange": "14:00-18:00",
+        "guestScore": 61,
+        "guestFeedbackResponses": 76,
+        "checkoutWaitMinutes": 8.4,
+        "pickupOnTimePct": 82.1,
+        "pickupOrders": 241,
+        "guestRecoveryIncidents": 18,
+        "criticalCoverageGapHours": 14,
+        "primaryGap": "Fulfillment/Pickup call-outs not visible in sales plan"
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Close",
+        "timeRange": "18:00-22:00",
+        "guestScore": 68,
+        "guestFeedbackResponses": 51,
+        "checkoutWaitMinutes": 6.5,
+        "pickupOnTimePct": 86.9,
+        "pickupOrders": 134,
+        "guestRecoveryIncidents": 6,
+        "criticalCoverageGapHours": 5,
+        "primaryGap": "Recovery queue carried into close"
+      }
+    ],
+    "drilldownLevel2AfternoonDepartment": [
+      {
+        "date": "2026-08-29",
+        "daypart": "Afternoon",
+        "department": "Fulfillment / Pickup",
+        "scheduledHours": 52,
+        "actualHours": 43,
+        "gapHours": 9,
+        "callOuts": 4,
+        "pickupOnTimePct": 82.1,
+        "guestRecoveryIncidents": 11,
+        "missingItemComplaints": 7,
+        "observableSignal": "Pickup queue exceeded staffed pick capacity by 14:40.",
+        "pickupOrdersPickedByDepartment": 164,
+        "pickupOrdersRelationship": "Subset allocation: Fulfillment/Pickup picked or staged 164 of the 241 Saturday afternoon pickup orders; the remaining 77 were handoff/drive-up orders handled outside the Fulfillment pick queue.",
+        "missingItemComplaintsRelationship": "Subset measure: 7 missing-item complaints are included in Saturday daily pickupComplaints = 18; department rows do not represent a complaint-total breakdown."
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Afternoon",
+        "department": "Front End",
+        "scheduledHours": 64,
+        "actualHours": 61,
+        "gapHours": 3,
+        "callOuts": 2,
+        "checkoutWaitMinutes": 8.4,
+        "guestRecoveryIncidents": 5,
+        "observableSignal": "Backup cashier calls overlapped drive-up rush.",
+        "pickupOrdersHandledOutsideFulfillmentPickQueue": 77,
+        "pickupOrdersRelationship": "Subset allocation: these 77 handoff/drive-up orders complete the 241 Saturday afternoon pickup orders when added to Fulfillment/Pickup's 164 picked/staged orders."
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Afternoon",
+        "department": "Grocery",
+        "scheduledHours": 48,
+        "actualHours": 46.5,
+        "gapHours": 1.5,
+        "callOuts": 1,
+        "onShelfAvailabilityPct": 89.6,
+        "guestRecoveryIncidents": 2,
+        "observableSignal": "Cooler replenishment tasks deferred after 15:00.",
+        "pickupOrdersRelationship": "Not applicable; this department row explains staffing/task effects, not pickup-order volume allocation."
+      },
+      {
+        "date": "2026-08-29",
+        "daypart": "Afternoon",
+        "department": "Style",
+        "scheduledHours": 36,
+        "actualHours": 35.5,
+        "gapHours": 0.5,
+        "callOuts": 1,
+        "taskCompletionPct": 78,
+        "guestRecoveryIncidents": 0,
+        "observableSignal": "Reshop queue grew, but did not drive the primary guest dip.",
+        "pickupOrdersRelationship": "Not applicable; this department row explains staffing/task effects, not pickup-order volume allocation."
+      }
+    ]
+  },
+  "semanticPalette": {
+    "background": "#FFFFFF",
+    "textPrimary": "#111827",
+    "textSecondary": "#374151",
+    "good": "#0F7B0F",
+    "warning": "#8A5A00",
+    "bad": "#B42318",
+    "target": "#2563EB",
+    "prior": "#6B7280",
+    "neutralFill": "#F3F4F6",
+    "gridline": "#E5E7EB",
+    "focusOutline": "#7C3AED"
+  },
+  "dataDisclosure": {
+    "exactWording": "Illustrative simulation data only. Store, sales, labor, guest, and operations values are synthetic and are not Target operational data.",
+    "recommendedPlacement": "Persistent footer below the dashboard title and repeated in the final details panel; use 12px text minimum, #374151 on white, with an info icon."
+  }
+};
+let scene=0,tab=0,impact=false,brief=0,why=false,signals=false,localized=false,compared=false,mode="Today";
+const app=document.getElementById("app"), names=["Hero","Inputs","Cost","Brief","Drill-down","Collisions","After","Close"];
+function go(n){scene=Math.max(0,Math.min(7,n));render()}
+function nav(label,action,aria){return `<div class="actionbar"><button class="ghost" type="button" ${scene===0?"disabled":""} onclick="go(scene-1)">Back</button><button class="primary" type="button" aria-label="${aria||label}" onclick="${action}">${label}</button></div>`}
+function tl(a,aria){return `<div class="timeline" role="img" aria-label="${aria}">${a.map(x=>`<div class="timeitem"><span class="dot" aria-hidden="true"></span><strong>${x}</strong></div>`).join("")}</div>`}
+function render(){ptext.textContent=`Scene ${scene+1} of 8`;pname.textContent=names[scene];pfill.style.width=`${(scene+1)/8*100}%`;app.innerHTML=[s1,s2,s3,s4,s5,s6,s7,s8][scene]()}
+function s1(){return `<section class="scene"><div class="eyebrow">Store Director morning simulation</div><h1>What if the Store Director walked in already oriented?</h1><p class="lede">A guided scenario showing how a store-specific brief can turn fragmented morning inputs into one leadership plan, so the first hour starts with observation and coaching instead of assembly.</p><div class="disclosure card" aria-label="Synthetic data disclosure">Illustrative simulation data only. Store, sales, labor, guest, and operations values are synthetic and are not Target operational data.</div>${tl(["6:15 AM — Home review","7:30 AM — Arrive at store","8:00 AM — Leader huddle","8:30 AM — Floor walk"],"Morning timeline from home review to first floor walk")}${nav("Start the morning","go(1)","Start the Store Director morning simulation")}</section>`}
+const tabNames=["Metrics","Leader recap","Corporate reading","Initiative dates"];
+const tabLabels=["Open metrics fragment","Open leader recap fragment","Open corporate reading fragment","Open initiative dates fragment"];
+function setTab(i,focus=false){tab=(i+tabNames.length)%tabNames.length;render();if(focus)requestAnimationFrame(()=>document.getElementById(`tab-${tab}`)?.focus())}
+function tabKey(e,i){if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();setTab(i+(e.key==="ArrowRight"?1:-1),true)}}
+function s2(){return `<section class="scene"><h2>Today starts with four useful inputs</h2><p class="lede">Each source has real signal. None of them answers, by itself, what the Store Director should do first.</p><div class="tabs" role="tablist" aria-label="Today fragments">${tabNames.map((t,i)=>`<button id="tab-${i}" role="tab" aria-selected="${i===tab}" aria-controls="panel-${i}" tabindex="${i===tab?0:-1}" aria-label="${tabLabels[i]}" onclick="setTab(${i})" onkeydown="tabKey(event,${i})">${t}</button>`).join("")}</div>${tabNames.map((t,i)=>`<div class="card" id="panel-${i}" role="tabpanel" aria-labelledby="tab-${i}" tabindex="${i===tab?0:-1}" ${i===tab?"":"hidden"}>${panel(i)}</div>`).join("")}${nav(tab<3?tabNames[tab+1]:"Continue to the cost",tab<3?`setTab(${tab+1})`:"go(2)")}</section>`}
+function panel(i){if(i===0)return `<h3>Excel-style daily metrics extract</h3><p>Useful signal, still needs store-level interpretation.</p><table aria-label="Synthetic metrics showing guest, pickup, operations, and payroll signals"><thead><tr><th>Metric</th><th>Latest</th><th>Signal</th><th>Source</th></tr></thead><tbody>${[["Saturday guest score","69","Below weekly run rate; afternoon daypart reached 61","Excel weekly store health export"],["Saturday checkout wait","6.2 min","Above normal, with afternoon at 8.4 min","POS / guest experience rollup"],["Saturday pickup on-time","88.4%","Below 95% service goal; afternoon at 82.1%","Store fulfillment/pickup system"],["Backroom task completion","76%","Carryover risk into Sunday on-shelf availability","Operations task report"],["Weekly payroll vs earned","-62 hours","Week looks nearly balanced; issue is daypart placement","UKG labor summary"]].map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`;if(i===1)return `<h3>Leader recap email</h3><p>Ground truth from the floor, not yet connected to the metrics.</p><div aria-label="Synthetic closing leader recap with floor observations and coaching notes"><div class="email-line"><strong>Subject: Sat close recap — pickup queue, front end backups, backroom carryover</strong><br>From: Closing Executive Team Leader<br>Sent: Saturday 10:48 PM</div><ul><li>Fulfillment called for Front End backup twice between 2:30 and 5:15. Drive-up handoff stayed moving, but order staging was tight and guest recovery calls increased.</li><li>Closing Team Leader shifted one Grocery puller to help clear pickup batches after 3:00. Cooler replenishment was restarted after dinner but not completed.</li><li>Backroom task list closed at 76%. Priority carryover for Sunday: cooler outs, pickup hold-space reset, and reshop from Style.</li><li>Team stayed calm and guest-focused. Biggest coaching need: clearer role handoff between pick, prep, and guest delivery during the afternoon rush.</li></ul></div>`;if(i===2)return `<h3>Outlook and MyDayComms reading queue</h3><p>Workstream-specific direction that still needs local translation.</p><div class="stack" aria-label="Synthetic Outlook and MyDayComms reading items with owners and asks">${[["Subject: Week 36 Service Focus — Order Pickup handoff standards","Field Operations — Service Experience","Review pickup handoff behaviors with leaders and confirm completion in MyDayComms by Friday, 09/04."],["Subject: Backroom Ready by Noon — Freshness and fill routines","Store Operations — Food & Beverage","Validate cooler replenishment routines and post a same-day recovery note for any department under 90% task completion."],["Subject: Labor Guardrails — protect peak guest-facing hours","Finance & Workforce Planning","Review weekly earned-hour variance and document any local tradeoffs before adding supplemental coverage."]].map(r=>`<div class="card soft"><strong>${r[0]}</strong><p><b>Owner:</b> ${r[1]}</p><p><b>Ask:</b> ${r[2]}</p></div>`).join("")}<span class="pill">Confirm Week 36 service huddle topic — due 09/03 at 12:00 PM</span><span class="pill">Acknowledge seasonal signing audit checklist — due 09/03 at 5:00 PM</span></div>`;return `<h3>Initiative date list</h3><p>Dates are clear in isolation; the collision appears only when store coverage is considered.</p><table aria-label="Synthetic initiative dates with owners and completion asks"><thead><tr><th>Initiative</th><th>Owner</th><th>Date</th><th>Completion ask</th></tr></thead><tbody>${[["Week 36 Order Pickup Handoff Calibration","Service Experience Program Manager","Thu 09/03","Run 10-minute leader calibration and confirm in MyDayComms by noon"],["Fresh Backroom Ready by Noon Reset","Food & Beverage Operations Lead","Thu 09/03","Validate cooler pull routine and assign recovery owner before close"],["Seasonal Endcap Signing Audit","Merchandising Execution Lead","Thu 09/03","Complete photo audit for seasonal endcaps by 5:00 PM"],["Workforce Guardrail Review","Finance & Workforce Planning Partner","Fri 09/04","Note any payroll tradeoff if adding coverage to peak guest-facing dayparts"]].map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`}
+function s3(){let rows=["Review guest, pickup, labor, and operations metrics","Reconcile leader recap against the metric exceptions","Identify action owners for today's huddle","Scan initiative dates and completion asks","Prepare one store priority for leaders"];return `<section class="scene"><h2>The hidden cost is the observation window</h2><p class="lede">The Store Director is doing responsible orientation work. The tradeoff is that the first chance to see the store operating goes dark.</p><div class="grid2"><div class="ledger" aria-label="Morning orientation ledger showing inputs that consume the first observation window">${rows.map((r,i)=>`<div class="row"><span class="check">✓</span><span>${r}</span><span class="pill">${i+1}/5</span></div>`).join("")}</div><div class="card" aria-label="Unchecked floor walk to observe pickup handoff before huddle"><span class="check unchecked">×</span><h3>Unchecked floor walk</h3><p>Observe pickup handoff before huddle: pick-to-prep timing, guest delivery clarity, and when Front End backup is called.</p></div></div><div class="card reveal ${impact?"on":""}"><h3>What goes dark first: seeing the work happen</h3><p>The loss is not generic time. It is the first live feedback loop of the day: watching pickup handoff, hearing what leaders are coaching, and catching friction before it becomes another metric tomorrow.</p><p><strong>When observation is pushed later, the Store Director is forced to lead from reports instead of from the floor.</strong></p></div><div class="actionbar"><button class="ghost" onclick="go(1)">Back</button><button class="primary" aria-label="Show how fragmented inputs affect Store Director observation and coaching" onclick="if(!impact){impact=true;render()}else go(3)">${impact?"Continue to the brief":"Show leadership impact"}</button></div></section>`}
+function pts(vals,min,max,w=520,h=180){return vals.map((v,i)=>`${40+i*76.6},${150-((v-min)/(max-min))*125}`).join(" ")}
+function trend(){let d=STORE_DATA.daily;return `<svg role="img" aria-label="Guest and Operations trend line for the week with an obvious Saturday dip" viewBox="0 0 520 180"><line x1="40" y1="20" x2="40" y2="150" stroke="var(--gridline)"/><line x1="40" y1="150" x2="500" y2="150" stroke="var(--gridline)"/><polyline points="${pts(d.map(x=>x.guest.guestScore),55,100)}" fill="none" stroke="var(--bad)" stroke-width="3"/><polyline points="${pts(d.map(x=>x.operations.fulfillmentPickupOnTimePct),55,100)}" fill="none" stroke="var(--target)" stroke-width="3"/>${d.map((x,i)=>`<g><circle cx="${40+i*76.6}" cy="${150-((x.guest.guestScore-55)/45)*125}" r="${x.dayName==="Saturday"?6:4}" fill="${x.dayName==="Saturday"?"var(--bad)":"var(--background)"}" stroke="var(--bad)"/><text x="${40+i*76.6}" y="170" text-anchor="middle" font-size="12" fill="var(--textSecondary)">${x.dayName.slice(0,3)}</text></g>`).join("")}<text x="370" y="28" font-size="12" fill="var(--bad)">Guest score</text><text x="370" y="44" font-size="12" fill="var(--target)">Pickup on-time</text><text x="414" y="112" font-size="12" fill="var(--bad)">Saturday dip</text></svg>`}
+function coverage(){let d=STORE_DATA.daily;return `<svg role="img" aria-label="Team coverage strip by daypart showing Saturday afternoon gap" viewBox="0 0 540 170">${["Opening","Midday","Afternoon","Close"].map((p,i)=>`<text x="10" y="${36+i*30}" font-size="12" fill="var(--textSecondary)">${p}</text>`).join("")}${d.map((day,ci)=>["opening","midday","afternoon","close"].map((p,ri)=>{let v=day.team.coverageGapHoursByDaypart[p],fill=v>=8?"var(--bad)":v>=3?"var(--warning)":"var(--neutralFill)";return `<g><rect x="${92+ci*62}" y="${18+ri*30}" width="50" height="22" rx="5" fill="${fill}" stroke="var(--gridline)"/><text x="${117+ci*62}" y="${34+ri*30}" text-anchor="middle" font-size="12" fill="${v>=3?"var(--background)":"var(--textPrimary)"}">${v}h</text></g>`}).join("")+`<text x="${117+ci*62}" y="160" text-anchor="middle" font-size="12" fill="var(--textSecondary)">${day.dayName.slice(0,3)}</text>`).join("")}</svg>`}
+function drillChart(){let rows=STORE_DATA.narrativeHook.drilldownLevel1SaturdayDaypart;return `<svg role="img" aria-label="Saturday daypart drill-down showing guest score wait time pickup on-time orders recovery incidents and gap signals" viewBox="0 0 560 210">${rows.map((r,i)=>{let y=38+i*42,b=r.daypart==="Afternoon";return `<g><text x="10" y="${y}" font-size="13" font-weight="700" fill="var(--textPrimary)">${r.daypart}</text><rect x="95" y="${y-16}" width="${r.guestScore*2.3}" height="10" fill="${b?"var(--bad)":"var(--warning)"}"/><text x="250" y="${y-7}" font-size="12" fill="var(--textPrimary)">Guest ${r.guestScore}</text><rect x="95" y="${y}" width="${r.checkoutWaitMinutes*22}" height="10" fill="var(--prior)"/><text x="250" y="${y+9}" font-size="12" fill="var(--textPrimary)">Wait ${r.checkoutWaitMinutes} min</text><rect x="360" y="${y-12}" width="${r.pickupOnTimePct*1.6}" height="10" fill="${b?"var(--bad)":"var(--target)"}"/><text x="360" y="${y+12}" font-size="12" fill="var(--textPrimary)">${r.pickupOnTimePct}% on-time · ${r.criticalCoverageGapHours} gap hrs</text></g>`}).join("")}</svg>`}
+function kpis(){let w=STORE_DATA.weeklySummary,s=STORE_DATA.daily[5],items=[["Guest",s.guest.guestScore,"Guest score 69; checkout wait 6.2 min","bad","Guest pillar card showing Saturday guest score and checkout wait signals"],["Team",s.team.callOuts,"12 call-outs; 27 critical gap hours","bad","Team pillar card showing call-outs and critical coverage gap signals"],["Operations","88.4%","Pickup on-time 88.4%; backroom tasks 76%","bad","Operations pillar card showing pickup on-time and backroom task completion signals"],["Financials","$2.535M","Sales to plan -2.5%; comp +3.0%; payroll -62 hrs","warn","Financials pillar card showing sales to plan comp percent and payroll versus earned"]];return `<div class="kpis" role="img" aria-label="Four-pillar store health cards for Guest Team Operations and Financials using synthetic data">${items.map((it,i)=>`<article class="kpi ${brief===1||brief===2&&(i===0||i===2)||brief===3&&(i===1||i===2)||brief===5&&i===1?"highlight":""}" aria-label="${it[4]}"><div class="label">${it[0]}</div><div class="value ${it[3]}">${it[1]}</div><p>${it[2]}</p></article>`).join("")}</div>`}
+function s4(){let stages=["Your store is steady overall, with one service issue that deserves the first walk. Financials are not the pressure point this morning: weekly sales are $2.535M against $2.600M plan, comp is +3.0%, and payroll is nearly balanced at -62 hours versus earned. Team and Operations are where the day needs attention, because Saturday's service misses concentrated around pickup and then showed up in the Guest pillar.","Saturday changed the week. Guest score dropped to 69, checkout wait reached 6.2 minutes, pickup on-time fell to 88.4%, and backroom task completion closed at 76%. The sharpest point was the afternoon: guest score reached 61, pickup on-time reached 82.1%, and checkout wait reached 8.4 minutes while pickup demand was peaking.","The weekly labor card can make this look like a total-hours issue, but the signal is more specific. The gap landed in the wrong place at the wrong time: Fulfillment/Pickup had 9 critical hours exposed in the Saturday afternoon window, and the leader recap points to handoff pressure between pick, prep, and guest delivery. That is the first thing worth seeing in person today.","Make pickup the first leadership priority. Walk the pickup handoff before huddle, watch whether roles are clear at the handoff point, and have the closing Team Leader own the recovery plan for afternoon role clarity. Keep the huddle simple: one guest-facing priority, one owner, one follow-up before close.","Defer the noncritical seasonal signing audit to the closing routine unless the floor stabilizes earlier. Complete the Order Pickup handoff calibration by noon, and pair the Fresh backroom reset with the same leader who is already checking cooler replenishment. The tradeoff protects the observation window without ignoring the corporate asks."];return `<section class="scene"><h2>With Copilot: the store-specific morning brief</h2><p class="lede">Power BI-style visuals provide evidence. The narrative turns that evidence into a leadership plan.</p><div class="grid2"><div class="card"><div class="mini">Morning brief</div><div aria-label="Copilot-style synthetic morning brief with staged recommendations">${stages.map((s,i)=>`<p class="brief-stage ${brief>i?"show":""}"><strong>Stage ${i+1}.</strong> ${s}</p>`).join("")}${brief===0?"<p>Click Generate my morning brief to reveal the staged brief beside the evidence.</p>":""}</div></div><div class="stack">${kpis()}<div class="chart ${brief===2?"highlight":""}"><h3>Guest and Operations trend</h3>${trend()}</div><div class="chart ${brief===3?"highlight":""}"><h3>Team coverage and pickup drill-down</h3>${coverage()}</div><div class="decision ${brief===4?"highlight":""}"><h3>Today's decision card</h3><p>Make pickup the first leadership priority. One guest-facing priority, one owner, one follow-up before close.</p></div><div class="decision ${brief===5?"highlight":""}"><h3>Initiative collision card</h3><p>Defer noncritical signing audit to closing routine unless the floor stabilizes earlier.</p></div></div></div><div class="actionbar"><button class="ghost" onclick="go(2)">Back</button><button class="primary" aria-label="Generate the synthetic store-specific morning brief" onclick="if(brief<5){brief++;render()}else go(4)">${brief<5?"Generate my morning brief":"Why this first?"}</button></div></section>`}
+function s5(){return `<section class="scene"><h2>Why pickup first?</h2><div class="grid2"><div><button class="primary" aria-label="Explain why pickup is the first recommended observation" onclick="why=true;render()">Why this first?</button><div class="drill ${why?"on":""}"><div class="card"><h3>Signals pointing to the first observation target</h3><p>Pickup is first because the signals point to an observation target, not because the data proves a single cause. The pattern is concentrated: Saturday guest score was 69, and the afternoon fell to 61 while pickup on-time dropped to 82.1% and checkout wait rose to 8.4 minutes. Fulfillment/Pickup had 9 critical hours exposed in that same window, and the leader recap names handoff clarity as the coaching need.</p><p>That is enough to go see the work. Watch the handoff from pick to prep to guest delivery, listen for when backup is called, and check whether the closing Team Leader has a clear recovery owner. If the observation confirms the signal, the huddle can focus on role clarity and the next afternoon rush instead of reviewing every red cell.</p><p aria-label="Accuracy note that guest and operations relationship is a signal to test not a proven cause"><strong>This simulation treats the Guest and Operations relationship as a signal worth testing. It does not assert proven causation.</strong></p><button class="secondary" aria-label="Show synthetic source signals behind the pickup recommendation" onclick="signals=true;render()">Show supporting signals</button></div></div></div><div class="chart">${drillChart()}</div></div><div class="signals ${signals?"on":""}"><div class="signal-grid">${[["Guest signal","Saturday guest score 69; afternoon guest score 61"],["Service signal","Pickup on-time 88.4% for Saturday; 82.1% in the afternoon"],["Wait signal","Checkout wait 6.2 minutes for Saturday; 8.4 minutes in the afternoon"],["Operations signal","Backroom task completion closed at 76%"],["Labor placement signal","Weekly payroll was -62 hours versus earned, but the exposed gap was concentrated in the pickup window"]].map(s=>`<div class="signal"><strong>${s[0]}</strong><span>${s[1]}</span></div>`).join("")}</div><div class="source-chips" aria-label="Synthetic source chips represented in the morning brief">${["Synthetic Power BI store metrics","Guest comments summary","Leader recap","UKG schedule snapshot","MyDayComms completion queue"].map(x=>`<span class="pill">${x}</span>`).join("")}</div></div><div class="actionbar"><button class="ghost" onclick="go(3)">Back</button><button class="primary" onclick="go(5)">Continue to collisions</button></div></section>`}
+function s6(){let rows=[["Week 36 Order Pickup Handoff Calibration","Service Experience Program Manager","Thu 09/03, due 12:00 PM","Run service huddle and confirm leader calibration in MyDayComms","Supports today's pickup observation priority"],["Fresh Backroom Ready by Noon Reset","Food & Beverage Operations Lead","Thu 09/03, due close","Validate cooler replenishment routine and document recovery owner","Can pair with existing Grocery recovery work"],["Seasonal Endcap Signing Audit","Merchandising Execution Lead","Thu 09/03, due 5:00 PM","Complete photo audit and confirm completion","Collides with thin afternoon leadership coverage"]];return `<section class="scene"><h2>Today's collisions</h2><p class="lede">A small version of the documented orchestration burden: roughly 12 projects, 50 dates, multiple owners, and no upstream deconfliction.</p><table aria-label="Synthetic initiative collision table with owners dates completion asks and local impact"><thead><tr><th>Initiative</th><th>Owner</th><th>Date</th><th>Generic completion ask</th><th>Local impact</th></tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table><div class="localized card ${localized?"on":""}" aria-label="Localized initiative plan with owner due date and recommended tradeoff"><h3>Localized for this store today</h3><p><strong>Complete all Week 36 service, backroom, and signing asks by the posted deadlines.</strong></p><p>Store-specific plan: Executive Team Leader — Service owns Order Pickup handoff calibration by 12:00 PM. Closing Team Leader owns afternoon pickup role clarity and recovery follow-up by 4:30 PM. Food & Beverage Team Leader validates cooler replenishment during the existing backroom reset before close.</p><p>Recommended tradeoff: move the seasonal endcap signing audit to the closing routine unless guest-facing coverage stabilizes before 3:30 PM. Do not take the Store Director's first walk away from pickup to complete a noncritical photo audit.</p><p>The corporate asks still get an owner and a due date. The store gets a sequence that matches today's risk.</p></div><div class="actionbar"><button class="ghost" onclick="go(4)">Back</button><button class="primary" aria-label="Rewrite generic corporate initiative asks into store-specific assignments" onclick="if(!localized){localized=true;render()}else go(6)">${localized?"Compare first hour":"Localize today's asks"}</button></div></section>`}
+function s7(){let today=["6:15 AM — Assemble the morning from email, Excel, recaps, and dates","7:30 AM — Arrive with priorities still being reconciled","8:00 AM — Huddle after last-minute synthesis","8:30 AM — Floor walk delayed"],cop=["7:30 AM — Arrive oriented","7:40 AM — Observe pickup handoff","8:00 AM — Huddle with one clear priority","8:20 AM — Coach closing Team Leader on recovery plan"],labels=mode==="Today"?today:cop,aria=mode==="Today"?"Current-state first hour showing fragmented input assembly and delayed floor walk":"Future-state first hour showing arrival oriented pickup observation huddle priority and coaching";return `<section class="scene"><h2>The first hour shifts back to leadership</h2><p class="lede">The Store Director still makes the calls. The brief changes what the first hour can be used for.</p><span class="mini">Today ⇄ With Copilot</span><div class="toggle" role="group" aria-label="Compare current morning timeline with the morning brief timeline"><button aria-label="Show today's fragmented first-hour timeline" aria-pressed="${mode==="Today"}" onclick="mode='Today';compared=true;render()">Today</button><button aria-label="Show first-hour timeline with a synthetic Copilot-style brief" aria-pressed="${mode==="With Copilot"}" onclick="mode='With Copilot';compared=true;render()">With Copilot</button></div><div class="compare ${compared?"on":""}">${tl(labels,aria)}<div class="card"><p>${mode==="Today"?"Today, the Store Director connects the dots before leading from them. The floor walk waits while the morning is assembled.":"With the brief, the Store Director moves from connecting the dots to making the decisions: see pickup first, coach the leader closest to the recovery, and keep the huddle focused."}</p><p><strong>The outcome is coaching capacity and live store observations, not report automation.</strong></p></div></div><div class="actionbar"><button class="ghost" onclick="go(5)">Back</button><button class="primary" aria-label="Compare current and future first-hour timelines" onclick="if(!compared){compared=true;render()}else go(7)">${compared?"Continue to takeaways":"Compare first hour"}</button></div></section>`}
+function s8(){return `<section class="scene"><h2>What executives should take away</h2><ol class="grid3" aria-label="Executive takeaways from the Store Director morning simulation"><li class="card"><h3>1</h3><p>Synthetic Power BI-style visuals show the state of the store across Guest, Team, Operations, and Financials.</p></li><li class="card"><h3>2</h3><p>Copilot-style narrative explains what changed, why it matters, and where the Store Director should lead first.</p></li><li class="card"><h3>3</h3><p>The first hour shifts from report assembly to live observation and coaching capacity.</p></li></ol><div class="disclosure card" aria-label="Footer disclosure">Illustrative simulation. No real Target data. No Microsoft or Target logos or trade dress.</div><div class="actionbar"><button class="ghost" onclick="go(6)">Back</button><button class="primary" aria-label="Replay the guided Store Director simulation" onclick="scene=0;tab=0;impact=false;brief=0;why=false;signals=false;localized=false;compared=false;mode='Today';render()">Replay in 90 seconds</button></div></section>`}
+render();
+</script></body></html>
+
